@@ -1,32 +1,34 @@
 import { Client } from 'ssh2';
+const fs = require('fs');
 
 var conn = new Client();
 
-var script = fs.readFileSync('script.sh', 'utf8');
+var script = fs.readFileSync('/home/kaguya/Grid-3.0-Rocket/scripts/linux.sh', 'utf8');
+
+var response;
 
 conn.on('ready', function() {
 
     console.log('Client :: ready');
 
-    var myconn = conn.exec(`host  ${CLIENT} bash`,  function(err, stream) {
+    var myconn = conn.exec(script,  function(err, stream) {
     
-      if (err) throw err;
-      stream.write(script)
+      if (err) console.error(err.message);
+      // stream.write(script)
       stream.on('close', function(code, signal) {
         console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
         conn.end();
       }).on('data', function(data) {
-        console.log(data);
+        console.log('Script Ran Successfully')
+        response = JSON.parse(data.toString('utf8'))
+        console.log(response)
       }).stderr.on('data', function(data) {
         console.log('STDERR: ' + data);
       });
-
     });
-
-    console.log(myconn);
   }).connect({
-  host: 'gateway',
-  username: 'gergely',
+  port: 22,
+  username: 'ubuntu'
 });
 
 
