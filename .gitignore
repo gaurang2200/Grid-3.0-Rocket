@@ -2,3 +2,4 @@ node_modules/
 public/
 views/
 deploy.sh
+credentials.txt

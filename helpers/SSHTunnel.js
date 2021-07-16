@@ -1,34 +1,43 @@
 import { Client } from 'ssh2';
+import minify from './minifier';
 const fs = require('fs');
 
 var conn = new Client();
-
-var script = fs.readFileSync('/home/kaguya/Grid-3.0-Rocket/scripts/linux.sh', 'utf8');
-
 var response;
 
 conn.on('ready', function() {
 
     console.log('Client :: ready');
-
-    var myconn = conn.exec(script,  function(err, stream) {
     
+    var osys = 'win64';
+
+    var script = fs.readFileSync('/home/kaguya/Grid-3.0-Rocket/scripts/linux.sh', 'utf8');
+    // if(osys == 'win64' || osys == 'win32'){
+    //   script = fs.readFileSync('/home/kaguya/Grid-3.0-Rocket/scripts/windows.ps1')
+    //   script = minify(script)
+      
+    //   script = `powershell -command '${script}'`;
+    // }
+
+    conn.exec('dir',  function(err, stream) {
       if (err) console.error(err.message);
       // stream.write(script)
       stream.on('close', function(code, signal) {
         console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-        conn.end();
+        try {
+          conn.end();
+        } catch (err) {
+          return;
+        }
       }).on('data', function(data) {
         console.log('Script Ran Successfully')
-        response = JSON.parse(data.toString('utf8'))
-        console.log(response)
+        // response = JSON.parse(data.toString('utf8'))
+        console.log(data.toString('utf8'))
       }).stderr.on('data', function(data) {
         console.log('STDERR: ' + data);
       });
     });
   }).connect({
-  port: 22,
-  username: 'ubuntu'
 });
 
 
