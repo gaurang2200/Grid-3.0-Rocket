@@ -1,4 +1,3 @@
-$domainInfo = (Get-ADDomain | ConvertTo-JSON);
 $strComputer = get-content env:computername;
 $computer = [ADSI]"WinNT://$strComputer";
 $objCount = ($computer.psbase.children | measure-object).count;
@@ -41,8 +40,24 @@ foreach($adsiObj in $computer.psbase.children)
 
 $workgroups = $workgroups | select-object Computername, ParentGroup, NameMember, TypeMember, PathMember, isGroupMember, Depth;
 
-$workgroups = ($workgroups | ConvertTo-JSON);
+$workgroups = ($workgroups | ConvertTo-JSON -Compress);
 
-$result;
+$domainInfo = (Get-ADDomain | ConvertTo-JSON -Compress);
 
-$domainInfo;
+$mac = Get-WmiObject win32_networkadapterconfiguration | Select-Object -Property @{
+    Name = "IPAddress";
+    Expression = {($PSItem.IPAddress[0]);}
+  }, MacAddress | Where IPAddress -NE $null | ConvertTo-JSON -Compress;
+
+$hostname = (hostname);
+$publicIP = $(Resolve-DnsName -Name myip.opendns.com -Server 208.67.222.220).IPAddress;
+
+$result = @{
+    "publicIP" = $publicIP;
+    "mac" = $mac;
+    "hostName" = $hostName;
+    "domainInfo" = $domainInfo;
+    "workGroups" = $workGroups;
+};
+
+$result | ConvertTo-JSON

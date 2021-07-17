@@ -3,3 +3,5 @@ public/
 views/
 deploy.sh
 credentials.txt
+windows.pem
+linux.pem
