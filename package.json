@@ -3,17 +3,21 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server.js"
   },
   "dependencies": {
-    "babel": "^6.23.0",
+    "cors": "^2.8.5",
     "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0",
     "ssh2": "^1.1.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",
     "@babel/core": "^7.14.6",
     "@babel/node": "^7.14.7",
-    "@babel/preset-env": "^7.14.7"
+    "@babel/preset-env": "^7.14.7",
+    "@babel/runtime": "^7.14.6",
+    "@babel/register": "^7.14.5"
   }
 }

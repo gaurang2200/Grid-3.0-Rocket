@@ -3,7 +3,7 @@ $strComputer = get-content env:computername;
 $computer = [ADSI]"WinNT://$strComputer";
 $objCount = ($computer.psbase.children | measure-object).count;
 $Counter = 1;
-$result = @();
+$workgroups = @();
 
 foreach($adsiObj in $computer.psbase.children)
 {
@@ -15,7 +15,7 @@ foreach($adsiObj in $computer.psbase.children)
         $LocalGroup = [ADSI]"WinNT://$strComputer/$group,group";
         $Members = @($LocalGroup.psbase.Invoke("Members"));
         $objCount = ($Members | measure-object).count;
-        
+
         $GName = $group.tostring();
 
         ForEach ($Member In $Members) {
@@ -25,7 +25,7 @@ foreach($adsiObj in $computer.psbase.children)
           If (($Path -like "*/$strComputer/*") -Or ($Path -like "WinNT://NT*")) {
               $Type = "Local";
           } Else {$Type = "Domain";}
-          $result += New-Object PSObject -Property @{
+          $workgroups += New-Object PSObject -Property @{
             Computername = $strComputer;
             NameMember = $Name;
             PathMember = $Path;
@@ -39,8 +39,10 @@ foreach($adsiObj in $computer.psbase.children)
     }
 }
 
-$result = $result | select-object Computername, ParentGroup, NameMember, TypeMember, PathMember, isGroupMember, Depth;
+$workgroups = $workgroups | select-object Computername, ParentGroup, NameMember, TypeMember, PathMember, isGroupMember, Depth;
 
-$result = ($result | ConvertTo-JSON);
+$workgroups = ($workgroups | ConvertTo-JSON);
+
 $result;
+
 $domainInfo;

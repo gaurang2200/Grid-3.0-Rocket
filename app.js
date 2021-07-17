@@ -1,41 +1,32 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+'use strict'
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+import Express from 'express'
+import cors from 'cors'
+import helmet from 'helmet'
+import Routes from './api/routes'
+import { SERVER_CONFIG } from './config'
+import startServer from './startServer'
 
-var app = express();
+const { BODY_LIMIT, ALLOW_CORS_ORIGIN, ALLOW_CORS_METHODS } = SERVER_CONFIG
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+const app = new Express()
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const corsOptions = {
+  origin: ALLOW_CORS_ORIGIN,
+  methods: ALLOW_CORS_METHODS
+}
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Middleware Initializations
+app.use(cors(corsOptions))
+app.use(Express.json({ limit: BODY_LIMIT }))
+app.use(Express.urlencoded({ limit: BODY_LIMIT, extended: true }))
+app.use(helmet())
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// Initialize Routes
+Routes.init(app)
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Start Server
+startServer(app)
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
-
-module.exports = app;
+//For testing
+module.export = app
