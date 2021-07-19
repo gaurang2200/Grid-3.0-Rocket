@@ -1,39 +1,46 @@
 import { Client } from 'ssh2';
 import minify from './Minifier';
-const fs = require('fs');
 
 var conn = new Client();
 
-conn.on('ready', function () {
-  console.log('Client :: ready');
+export default (host, port, os, user, key) => {
 
-  var osys = 'linux';
-  var script;
+  conn.on('ready', () => {
 
-  if(osys == 'win64' || osys == 'win32'){
-    script = minify(`/home/kaguya/Grid-3.0-Rocket/scripts/windows.ps1`)
-    script = `powershell -command "${script}"`;
-  } else {
-    script = minify('/home/kaguya/Grid-3.0-Rocket/scripts/linux.sh');
-  }
+    console.log('Client :: ready');
 
-  //For windows cmd open -> powershell
-  conn.exec(script, function (err, stream) {
-    if (err) console.error(err.message);
-    stream.on('close', function (code, signal) {
-      console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-      conn.end();
-    }).on('data', function (data) {
-      console.log(data.toString('utf8'))
-    }).stderr.on('data', function (data) {
-      console.log('STDERR: ' + data);
-    })
-    process.on('uncaughtException', (err) => {
-      console.log(`Error Ignored`)
-    })
+    var script;
+
+    if (os == 'win64' || os == 'win32')
+      script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`
+    else
+      script = minify(process.env.SH_SCRIPT_PATH);
+
+    conn.exec(script, (err, stream) => {
+
+      if (err) console.error(err.message);
+
+      stream.on('close', (code, signal) => {
+        console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+        conn.end();
+      }).on('data', (data) => {
+        console.log(data.toString('utf8'))
+      }).stderr.on('data', (data) => {
+        console.log('STDERR: ' + data);
+      });
+
+      process.on('uncaughtException', (err) => {
+        console.log(`Error Ignored`)
+      })
+
+    });
+  }).connect({
+    host: host,
+    port: port,
+    username: user,
+    privateKey: key
   });
-}).connect({
-});
+}
 
 
 /*

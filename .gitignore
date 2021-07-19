@@ -5,3 +5,4 @@ deploy.sh
 credentials.txt
 windows.pem
 linux.pem
+cron.sh
