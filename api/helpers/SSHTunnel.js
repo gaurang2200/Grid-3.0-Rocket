@@ -1,11 +1,14 @@
-import { Client } from 'ssh2';
-import minify from './Minifier';
+import { Client } from 'ssh2'
+import minify from './Minifier'
+import DB_CONFIG from '../../config'
 
-var conn = new Client();
+const { elastic } = DB_CONFIG
+
+const ssh2 = new Client()
 
 export default (host, port, os, user, key) => {
 
-  conn.on('ready', () => {
+  ssh2.on('ready', () => {
 
     console.log('Client :: ready');
 
@@ -16,15 +19,22 @@ export default (host, port, os, user, key) => {
     else
       script = minify(process.env.SH_SCRIPT_PATH);
 
-    conn.exec(script, (err, stream) => {
+    ssh2.exec(script, (err, stream) => {
 
       if (err) console.error(err.message);
 
       stream.on('close', (code, signal) => {
         console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-        conn.end();
+        ssh2.end();
       }).on('data', (data) => {
-        console.log(data.toString('utf8'))
+        try{
+          data = JSON.parse(data.toString('utf8'))
+          elastic.index({
+            index:"assets_log",
+            body:data
+          })
+        }
+        catch { }
       }).stderr.on('data', (data) => {
         console.log('STDERR: ' + data);
       });
@@ -34,7 +44,7 @@ export default (host, port, os, user, key) => {
       })
 
     });
-  }).connect({
+  }).ssh2ect({
     host: host,
     port: port,
     username: user,

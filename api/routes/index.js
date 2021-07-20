@@ -1,7 +1,9 @@
 "use strict";
 
-const Routes = [
+import AssetRouter from './Asset';
 
+const Routes = [
+  { path:'/add/ip',router: AssetRouter }
 ]
 
 Routes.init = (app) => {
