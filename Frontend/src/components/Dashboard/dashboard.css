@@ -1,0 +1,17 @@
+body{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.w-full{
+    width: 100%;
+}
+
+.h-full{
+    height: 100%;
+}
+
+.whitebg{
+    background-color: rgb(108, 255, 54);
+}
