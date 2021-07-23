@@ -1,0 +1,32 @@
+.addButton {
+    background-color: transparent;
+    cursor: pointer;
+    height: 100%;
+    float: left;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    transition: all 0.3s;
+}
+
+.addButton:hover {
+    color: black !important;
+}
+
+.MuiTableCell-root{
+    border-bottom: none !important;
+}
+
+.MuiPaper-elevation4{
+    box-shadow: none !important;
+}
+
+.MuiAppBar-colorPrimary{
+    background-color: transparent !important;
+}
+
+.MuiTabs-flexContainer {
+    font-family: 'Source Serif Pro', sans-serif;
+    justify-content: space-around;
+}

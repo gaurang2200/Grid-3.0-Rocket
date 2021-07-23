@@ -13,5 +13,27 @@ body{
 }
 
 .whitebg{
-    background-color: rgb(108, 255, 54);
+    background-color: #F9FAFB;
 }
+
+.mainContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* background-image: url('../../images/bg1.png'); */
+    /* background-size: contain; */
+    /* background-repeat: no-repeat; */
+}
+
+/* #dashboardBody{
+    background-color: #FAFBFD;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    padding: 1em 0 5rem 0;
+    max-width: 65rem;
+    width: 95%;
+    border-radius: 1em;
+    box-shadow: black 0 0 0.5em;
+} */

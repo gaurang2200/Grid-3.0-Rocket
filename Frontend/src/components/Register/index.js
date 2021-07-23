@@ -1,19 +1,21 @@
 import React, {Component} from 'react';
-import '../Login/login.css'
-import './register.css'
-import '../Regex'
+import axios from 'axios';
+// import {Redirect} from 'react-router-    dom'
+import '../Login/login.css';
+import './register.css';
+import '../Regex';
 import { validEmail } from '../Regex';
 
 
 function validate(email, password, confirmPassword){
-    if(password !== confirmPassword){
-        return "Please make sure the passwords match"
-    } else if( !validEmail.test(email)){
+    if( !validEmail.test(email)){
         return "Enter a Valid Email"
     } else if(password.length === 0){
         return "Password Cannot be Empty"
+    } else if(password !== confirmPassword){
+        return "Please make sure the passwords match"
     }
-    return '';
+    return "";
 }
 
 
@@ -24,7 +26,8 @@ class Register extends Component {
             email: "",
             password: "",
             confirmPassword: "",
-            errMessage: ""
+            errMessage: "",
+            signup: false
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -38,25 +41,20 @@ class Register extends Component {
         });
     };
 
-
     handleSubmit = (e) => {
         e.preventDefault();
         let {email, password, confirmPassword} = this.state;
 
         let message = validate(email, password, confirmPassword);
+        this.setState({
+            errMessage: message
+        });
         if(message.length > 0){
-            this.state.errMessage = message;
-            console.log(message)
+            console.log(this.state.errMessage)
             return;
         }
         
-        
-        // if(this.state.errMessage !== ""){
-        //     return;
-        // }
-
-        // let { email, password } = this.state;
-        // console.log("sending reqest", email, password);
+        console.log("Sending reqest", email, password);
         // const requestOptions = {
         //     method: "POST",
         //     headers: { "Content-Type": "application/json" },
@@ -64,12 +62,23 @@ class Register extends Component {
         //         email: email,
         //         password: password,
         //     }),
-        // }; 
+        // };
+
+        axios.post(
+            '/api/register',
+            this.state
+        ).then((res) => {
+            this.setState({signup: true});
+        }).catch(err => {
+            this.setState({signup: true})
+        });
         
     }
 
 
     render(){
+        // this.state.signup?<Redirect to={{pathname: '/dashboard'}}/>:<p />
+
         const { errMessage } = this.state
         return (
             <div className="bodyContainer">
@@ -81,26 +90,24 @@ class Register extends Component {
                                 <h1 className="loginHeading">Register</h1>
                                 <label className="inputBlock">
                                     <span>Email</span>
-                                    <input className="w-full" type="email" name="email"
+                                    <input className="w-full" type="email" name="email" required={true}
                                     value={this.state.email} onChange={this.handleChange} 
                                     placeholder="janedoe@gmail.com"/>
                                 </label>
                                 <label className="inputBlock ">
                                     <span>Password</span>
-                                    <input className="w-full" type="password" name="password"
+                                    <input className="w-full" type="password" name="password" required={true}
                                     value={this.state.password} onChange={this.handleChange} 
                                     placeholder="**********"/>
                                 </label>
                                 <label className="inputBlock ">
                                     <span>Confirm Password</span>
-                                    <input className="w-full" type="password" name="confirmPassword"
+                                    <input className="w-full" type="password" name="confirmPassword" required={true}
                                     value={this.state.confirmPassword} onChange={this.handleChange} 
                                     placeholder="**********"/>
                                 </label>
                             </div>
-                            {
-                                <div className="errInfo">{errMessage}</div>
-                            }
+                            <div className="errInfo">{errMessage}</div>
                             <input type="submit" value="Register" className="w-full buttonStyle" />
                         </form>
                         <p className="margin1">
