@@ -1,55 +1,55 @@
 import { Client } from 'ssh2'
 import minify from './Minifier'
-import DB_CONFIG from '../../config'
-
-const { elastic } = DB_CONFIG
 
 const ssh2 = new Client()
 
-export default (host, port, os, user, key) => {
+export default async (host, port, os, user, password, privateKey) => {
 
-  ssh2.on('ready', () => {
+  return new Promise((resolve, reject) => {
 
-    console.log('Client :: ready');
+    let result = ""
 
-    var script;
+    ssh2.on('ready', () => {
 
-    if (os == 'win64' || os == 'win32')
-      script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`
-    else
-      script = minify(process.env.SH_SCRIPT_PATH);
+      console.log('Client :: ready');
 
-    ssh2.exec(script, (err, stream) => {
+      var script;
 
-      if (err) console.error(err.message);
+      if (os == 'win64' || os == 'win32')
+        script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`
+      else
+        script = minify(process.env.SH_SCRIPT_PATH);
 
-      stream.on('close', (code, signal) => {
-        console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
-        ssh2.end();
-      }).on('data', (data) => {
-        try{
-          data = JSON.parse(data.toString('utf8'))
-          elastic.index({
-            index:"assets_log",
-            body:data
-          })
-        }
-        catch { }
-      }).stderr.on('data', (data) => {
-        console.log('STDERR: ' + data);
+      ssh2.exec(script, (err, stream) => {
+
+        if (err) console.error(err.message);
+
+        stream.on('close', (code, signal) => {
+          console.log('Stream :: close :: code: ' + code + ', signal: ' + signal)
+          ssh2.end()
+          resolve(result)
+        }).on('data', (data) => {
+          try {
+            data = JSON.parse(data.toString('utf8'))
+            result = data
+          }
+          catch { }
+        }).stderr.on('data', (data) => {
+          console.log('STDERR: ' + data);
+        });
+
+        process.on('uncaughtException', (err) => {
+          console.log(`Error Ignored`)
+        })
+
       });
-
-      process.on('uncaughtException', (err) => {
-        console.log(`Error Ignored`)
-      })
-
+    }).connect({
+      host: host,
+      port: port,
+      username: user,
+      password: password
     });
-  }).ssh2ect({
-    host: host,
-    port: port,
-    username: user,
-    privateKey: key
-  });
+  })
 }
 
 

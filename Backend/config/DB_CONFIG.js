@@ -16,4 +16,4 @@ const client = new Client({
     }
 })
 
-export default { elastic }
+export default client

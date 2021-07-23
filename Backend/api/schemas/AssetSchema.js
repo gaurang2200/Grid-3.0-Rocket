@@ -1,7 +1,7 @@
-import mongoose from 'mongoose'
+import { Schema } from 'mongoose'
 
 
-const AssetSchema = new mongoose.Schema({
+const AssetSchema = new Schema({
   ip:{ type:String,required:true },
   os:{ type:String,enum:['linux','windows'],required:true },
   username:{ type:String,required:true },
@@ -10,6 +10,4 @@ const AssetSchema = new mongoose.Schema({
   privateKey:{ type:String }
 })
 
-export {
-  AssetSchema
-}
+export default AssetSchema

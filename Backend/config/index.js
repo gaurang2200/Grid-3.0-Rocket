@@ -1,10 +1,11 @@
-import DB_CONFIG from './DB_CONFIG'
+'use strict'
+import client from './DB_CONFIG'
 import SERVER_CONFIG from './SERVER_CONFIG'
 import MONGO_CONFIG from './MONGO_CONFIG'
 
 
 export {
-  DB_CONFIG,
+  client,
   SERVER_CONFIG,
   MONGO_CONFIG
 }

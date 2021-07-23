@@ -1,9 +1,13 @@
 "use strict";
 
-import AssetRouter from './Asset';
+import AssetRouter from './Asset'
+import KibanaRouter from './Kibana'
+import AuthRouter from './Auth'
 
 const Routes = [
-  { path:'/add/ip',router: AssetRouter }
+  { path:'/api/ip/',router: AssetRouter },
+  { path:'/kibana/',router:KibanaRouter },
+  { path:'/api/auth',router:AuthRouter }
 ]
 
 Routes.init = (app) => {

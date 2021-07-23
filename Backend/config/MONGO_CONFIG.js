@@ -1,6 +1,6 @@
 'use strict'
 
-import { mongoose } from '@m92/mongo-odm'
+import mongoose from 'mongoose'
 import fs from 'fs'
 
 const {

@@ -1,5 +1,5 @@
 import Express from 'express'
-import AssetController from '../controllers'
+import { AssetController } from '../controllers'
 
 
 const AssetRouter = new Express.Router()
@@ -13,4 +13,4 @@ const { get,create,del,update } = AssetController
   * @POST /ip/add
   * @body Requires ip,username,password or privateKey
 */
-APIRouter.post('/ip/add',create)
+AssetRouter.post('/add',create)

@@ -15,7 +15,7 @@ module.exports = {
      * @param Buffer masterkey
      * @returns String encrypted text, hex encoded
      */
-    encryptKey: function (text, masterkey){
+    encryptPayload: function (text, masterkey){
         try {
             // random initialization vector
             var iv = crypto.randomBytes(16);
@@ -52,7 +52,7 @@ module.exports = {
      * @param Buffer masterkey
      * @returns String decrypted (original) text
      */
-    decryptKey: function (data, masterkey){
+    decryptPayload: function (data, masterkey){
         try {
             // hex decoding
             var bData = Buffer.from(data, 'hex');
@@ -81,5 +81,5 @@ module.exports = {
         // error
         return null;
     }
-    
+
 };

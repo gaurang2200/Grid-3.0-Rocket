@@ -1,10 +1,3 @@
-export default class ResponseBody {
-  constructor (isError,message) {
-    this.message = message
-    this.error = isError
-  }
+export default function responseBody(isError=false,message='') {
+  return {error:isError,message:message};
 }
-//React Production + NodeJS
-//Front end static
-//Both are running on same server
-

@@ -1,5 +1,5 @@
-import ResponseBody from '../helpers'
-import AssetModel from '../models'
+import { responseBody } from '../helpers'
+import { AssetModel } from '../models'
 
 const AssetController = {
   create,
@@ -12,9 +12,9 @@ export default AssetController
 
 async function create(request,response){
   const { body={} } = request
-  const { isError, message } = AssetModel.findOrCreate(body);
-  let res = new ResponseBody(isError,message);
-  response.send(res);
+  const { status=200,isError=false, message='' } = await AssetModel.findOrCreate(body)
+  let res = responseBody(isError,message)
+  response.status(status).send(res)
 }
 
 async function del(request,response){
