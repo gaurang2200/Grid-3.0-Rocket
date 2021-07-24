@@ -7,7 +7,10 @@ import AuthRouter from './Auth'
 const Routes = [
   { path:'/api/ip/',router: AssetRouter },
   { path:'/kibana/',router:KibanaRouter },
-  { path:'/api/auth',router:AuthRouter }
+  { path:'/api/auth',router:AuthRouter },
+  { path:'/api/hello', router:(req, res) => {
+    res.send("Hello World")
+  }}
 ]
 
 Routes.init = (app) => {

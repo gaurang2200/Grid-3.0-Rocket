@@ -8,8 +8,8 @@ const AuthModel = {
 }
 
 async function register(body) {
-  const { name, username, password } = body
-  if (!name || !username || !password)
+  const { username, password } = body
+  if (!username || !password)
     return { status: 400, isError: true, message: "All Fields Required" }
   body.password = await crypter.hash(password)
   let user = await AuthDAO.findOrCreate(body)

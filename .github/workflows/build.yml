@@ -1,0 +1,32 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@master
+        with:
+          node-version: 12
+      - name: Front End Build Test
+        working-directory: ./Frontend
+        run: |
+          npm i
+          npm run build
+      - name: Backend Run Test
+        working-directory: ./Backend
+        run: |
+          npm ci
+          chmod +x ./deploy.sh
+          ./deploy.sh & npx wait-on http://localhost:8080
+        env:
+          DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
+          JWT_SECRET_TOKEN: ${{secrets.JWT_SECRET_TOKEN}}
+          SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
+          HOST: ${{secrets.HOST}}
+          NODE_ENV: ${{secrets.NODE_ENV}}
