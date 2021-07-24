@@ -20,6 +20,7 @@ async function decryptJWT(request,response,next){
   try{
     let payload = jwt.verify(request.cookie.jwt,process.env.JWT_SECRET_KEY)
     request.id = payload.id
+    console.log(payload)
     next()
   }
   catch(e){
