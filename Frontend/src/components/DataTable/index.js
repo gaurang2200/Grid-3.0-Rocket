@@ -12,37 +12,18 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-const exData = [{
-    'username': 'Admin Super Pro Max',
-    'add': '127.0.0.1',
-    'ipName': 'Local-IP',
-    'desc': 'This is a local IP'
-},
-{
-    'username': 'Ubuntu',
-    'add': '127.0.0.1',
-    'ipName': 'Local IP',
-    'desc': 'This is a local IP'
-},
-{
-    'username': 'Windows',
-    'add': '127.0.0.1',
-    'ipName': 'Local IP Pro Max',
-    'desc': 'This is a local IP'
-},
-{
-    'username': 'Administrator',
-    'add': '127.0.0.1',
-    'ipName': 'LocalIP Series S Max Pro',
-    'desc': 'This is an Example of a long long long description'
+const styles = {
+    actionTextStyle:{
+        fontSize: '0.9rem',
+        color: 'black'
+    }
 }
-]
 
 
 const StyledTableCell = withStyles((theme) => ({
     head: {
-        backgroundColor: '#fccd33',
-        color: theme.palette.common.black,
+        backgroundColor: '#333333',
+        color: theme.palette.common.white,
         fontWeight: 'bold',
     },
     body: {
@@ -64,20 +45,26 @@ const StyledTableRow = withStyles((theme) => ({
 
 
 const useStyles = makeStyles((theme) => ({
-    table: {
-        minWidth: 700,
-    },
     iconStyle: {
         display: 'flex',
+        borderRadius: '10px',
+        padding: '0.3em 0.5em',
+        marginRight: '1rem'
+    },
+    editStyle:{
+        backgroundColor: '#E4AC00BB'
+    },
+    deleteStyle:{
+        backgroundColor: '#FF375FDD'
     }
 }))
 
 
-const DataTable = () => {
+const DataTable = (props) => {
     const classes = useStyles();
 
     return (
-        <TableContainer style={{width: '90%', maxWidth: "50rem"}} component={Paper}>
+        <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>
             <Table className={classes.table} aria-label="Data Table">
                 <TableHead>
                     <TableRow>
@@ -85,32 +72,25 @@ const DataTable = () => {
                         <StyledTableCell align="right">IP Address</StyledTableCell>
                         <StyledTableCell align="right">IP Username</StyledTableCell>
                         <StyledTableCell align="right">Description</StyledTableCell>
-                        <StyledTableCell align="right">Actions</StyledTableCell>
+                        <StyledTableCell align="left">Actions</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {exData.map((row, index) => (
+                {props.table.map((row, index) => (
                     <StyledTableRow key={row.username}>
                         <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                        <StyledTableCell align="right">{row.add}</StyledTableCell>
+                        <StyledTableCell align="right">{row.ipAdd}</StyledTableCell>
                         <StyledTableCell align="right">{row.ipName}</StyledTableCell>
                         <StyledTableCell align="right" compnent="th" scope="row">{row.desc}</StyledTableCell>
                         <StyledTableCell style={{display: 'flex'}}>
                             <IconButton
-                                className={classes.iconStyle}
-                                aria-label="more"
-                                aria-controls="long-menu"
-                                aria-haspopup="true"
-                            >
-                                <EditIcon />
-                            </IconButton>
-                            <IconButton
-                                className={classes.iconStyle}
+                                className={[classes.iconStyle, classes.deleteStyle].join(" ")}
                                 aria-label="more"
                                 aria-controls="long-menu"
                                 aria-haspopup="true"
                             >
                                 <DeleteIcon />
+                                <span style={styles.actionTextStyle}>Delete</span>
                             </IconButton>
                         </StyledTableCell>
                     </StyledTableRow>

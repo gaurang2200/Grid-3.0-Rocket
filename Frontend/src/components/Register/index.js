@@ -4,12 +4,12 @@ import axios from 'axios';
 import '../Login/login.css';
 import './register.css';
 import '../Regex';
-import { validEmail } from '../Regex';
 
+const BASE_URL = "http://192.168.198.172:8080"
 
-function validate(email, password, confirmPassword){
-    if( !validEmail.test(email)){
-        return "Enter a Valid Email"
+function validate(username, password, confirmPassword){
+    if( username.length === 0){
+        return "Username Cannot be Empty"
     } else if(password.length === 0){
         return "Password Cannot be Empty"
     } else if(password !== confirmPassword){
@@ -23,12 +23,13 @@ class Register extends Component {
     constructor(props){
         super(props);
         this.state = {
-            email: "",
+            username: "",
             password: "",
             confirmPassword: "",
             errMessage: "",
             signup: false
         };
+        this.handleErrMessage = this.handleErrMessage.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -41,11 +42,17 @@ class Register extends Component {
         });
     };
 
+    handleErrMessage = (message) => {
+        this.setState({
+            errMessage: message
+        })
+    }
+
     handleSubmit = (e) => {
         e.preventDefault();
-        let {email, password, confirmPassword} = this.state;
+        let {username, password, confirmPassword} = this.state;
 
-        let message = validate(email, password, confirmPassword);
+        let message = validate(username, password, confirmPassword);
         this.setState({
             errMessage: message
         });
@@ -53,26 +60,22 @@ class Register extends Component {
             console.log(this.state.errMessage)
             return;
         }
-        
-        console.log("Sending reqest", email, password);
-        // const requestOptions = {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json" },
-        //     body: JSON.stringify({
-        //         email: email,
-        //         password: password,
-        //     }),
-        // };
+        const requestHeaders = {
+            headers: { "Content-Type": "application/json" }
+        };
 
         axios.post(
-            '/api/register',
-            this.state
+            `${BASE_URL}/api/auth/register`,
+            {
+                username: username,
+                password: password
+            },
+            requestHeaders
         ).then((res) => {
-            this.setState({signup: true});
+            window.location = '/login';
         }).catch(err => {
-            this.setState({signup: true})
+            this.handleErrMessage(err.response.data.message)
         });
-        
     }
 
 
@@ -89,10 +92,10 @@ class Register extends Component {
                             <div id="details">
                                 <h1 className="loginHeading">Register</h1>
                                 <label className="inputBlock">
-                                    <span>Email</span>
-                                    <input className="w-full" type="email" name="email" required={true}
-                                    value={this.state.email} onChange={this.handleChange} 
-                                    placeholder="janedoe@gmail.com"/>
+                                    <span>Username</span>
+                                    <input className="w-full" type="text" name="username" required={true}
+                                    value={this.state.username} onChange={this.handleChange} 
+                                    placeholder="hackingguy"/>
                                 </label>
                                 <label className="inputBlock ">
                                     <span>Password</span>

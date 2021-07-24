@@ -3,7 +3,6 @@ import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import EqualizerRoundedIcon from '@material-ui/icons/EqualizerRounded';
 import './navbar.css';
 import Logout from './logout';
-import AddIP from '../AddIPAdd'
 
 function Navbar(){
     return (
@@ -13,7 +12,6 @@ function Navbar(){
                 <ul id="before">
                     <a href="/dashboard"><li><HomeRoundedIcon />&nbsp;&nbsp;Dashboard</li></a>
                     <a href="/kibana"><li><EqualizerRoundedIcon />&nbsp;&nbsp;Kibana</li></a>
-                    <li><AddIP /></li>
                 </ul>
             </div>
             <Logout />
@@ -22,5 +20,3 @@ function Navbar(){
 }
 
 export default Navbar;
-
-//https://i-o-optimized-deployment-f3036f.kb.us-west1.gcp.cloud.es.io:9243/app/home

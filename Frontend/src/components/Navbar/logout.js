@@ -76,9 +76,6 @@ const Logout = () => {
                         <MenuItem component={Link} to="../kibana" onClick={handleClose}>
                             <EqualizerRoundedIcon />&nbsp;&nbsp;Kibana
                         </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            <AddIP />
-                        </MenuItem>
                         <MenuItem component={Link} to="../login" onClick={handleClose}>
                             <ExitToAppIcon />&nbsp;&nbsp;Logout
                         </MenuItem>

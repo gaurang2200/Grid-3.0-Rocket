@@ -20,13 +20,3 @@ function App() {
 }
 
 export default App;
-
-/*
-kibana.GridRocket.ml -> ngnix -> add an extra header with auth cookie -> Send it to the link
-
-Server {
-  $add_header authorization: basic base64(cookie)
-  $proxy_pass https://i-o-optimized-deployment-f3036f.kb.us-west1.gcp.cloud.es.io:9243/app/home
-}
-
-*/

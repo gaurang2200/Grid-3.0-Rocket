@@ -1,18 +1,34 @@
 .addButton {
-    background-color: transparent;
+    font-size: 1rem;
     cursor: pointer;
     height: 100%;
     float: left;
     list-style: none;
     display: flex;
     align-items: center;
-    justify-content: start;
-    transition: all 0.3s;
+    justify-content: center;
 }
 
-.addButton:hover {
-    color: black !important;
+.addButtonStyle{
+    margin: 1.5em;
+    width: 20%;
+    min-width: 15em;
+    background-color: #36da6d;
+    float: right;
+    padding: 0em 1em;
+    transition: all 0.3s;
+    border-radius: 10px;
+    height: 4em;
 }
+
+.addButtonStyle:hover{
+    background-color: cornflowerblue;
+}
+
+
+
+
+
 
 .MuiTableCell-root{
     border-bottom: none !important;

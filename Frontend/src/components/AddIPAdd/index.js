@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
 import './addip.css';
 import '../Navbar/navbar.css';
+import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Backdrop, Fade, AppBar, Tabs, Tab }
 from '@material-ui/core';
+import DataTable from '../DataTable';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 
 
@@ -47,13 +49,18 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '35em',
     width: '90%',
   },
-  tabTextStyle: {
-    color: 'black',
-    fontFamily: 'Source Serif Pro'
-  }
 }));
 
-const AddIP = () => {
+const styles = {
+  tabTextStyle: {
+    color: 'black', 
+    fontFamily: 'Source Serif Pro', 
+    width: '40%', 
+    padding: 0,
+  }
+}
+
+function AddIP(props){
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
@@ -63,7 +70,8 @@ const AddIP = () => {
         password: "",
         ipName: "",
         desc: ""
-    })
+    });
+    const [data, setData] = useState(props.table);
 
     const handleOpen = () => {
         setOpen(true);
@@ -78,6 +86,7 @@ const AddIP = () => {
     }
 
     const handleChange = (e) => {
+        e.preventDefault();
         let propName = e.target.name;
         let value = e.target.value;
         let type = e.target.type;
@@ -92,82 +101,95 @@ const AddIP = () => {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        // let {ipName, ipAdd, password, desc} = state;
+
+        const newData = {
+          username: state.username,
+          ipAdd: state.ipAdd,
+          password: state.password,
+          ipName: state.ipName,
+          desc: state.desc
+        };
+
+        const newTable = [...data, newData];
+        setData(newTable)
         console.log(state);
     }
 
   return (
-    <div className="w-full h-full">
-      <a className="w-full h-full addButton" onClick={handleOpen}>
-        <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
-      </a>
-      <Modal
-        className={classes.modal}
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <div className={classes.paper}>
-            <h2 id="transition-modal-title">Add an IP Address</h2>
-            <form onSubmit={handleOnSubmit}>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
+      <DataTable table={data} />
+      <button className="addButtonStyle">
+        <a className="w-full h-full addButton" onClick={handleOpen}>
+          <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
+        </a>
+        <Modal
+          className={classes.modal}
+          open={open}
+          onClose={handleClose}
+          closeAfterTransition
+          BackdropComponent={Backdrop}
+          BackdropProps={{
+            timeout: 500,
+          }}
+        >
+          <Fade in={open}>
+            <div className={classes.paper}>
+              <h2 id="transition-modal-title">Add an IP Address</h2>
+              <form onSubmit={handleOnSubmit}>
 
-                <label className="inputBlock">
-                    <span>Username</span>
-                    <input className="w-full" type="text" name="ipName" required={true}
-                    onChange={handleChange} 
-                    placeholder="Administrator"/>
-                </label>
+                  <label className="inputBlock">
+                      <span>Username</span>
+                      <input className="w-full" type="text" name="username" required={true}
+                      onChange={handleChange} 
+                      placeholder="Administrator"/>
+                  </label>
 
-                <label className="inputBlock ">
-                    <span>IP Address</span>
-                    <input className="w-full" type="text" name="ipAdd" required={true}
-                    onChange={handleChange} 
-                    placeholder="127.0.0.1"/>
-                </label>
+                  <label className="inputBlock ">
+                      <span>IP Address</span>
+                      <input className="w-full" type="text" name="ipAdd" required={true}
+                      onChange={handleChange} 
+                      placeholder="127.0.0.1"/>
+                  </label>
 
-                <label className="inputBlock">
-                    <span>IP Name</span>
-                    <input className="w-full" type="text" name="ipName" required={true}
-                    onChange={handleChange} 
-                    placeholder="Local IP"/>
-                </label>
+                  <label className="inputBlock">
+                      <span>IP Name</span>
+                      <input className="w-full" type="text" name="ipName" required={true}
+                      onChange={handleChange} 
+                      placeholder="Local IP"/>
+                  </label>
 
-                <label className="inputBlock ">
-                  <AppBar position="static">
-                    <Tabs value={value} onChange={handleValueChange}>
-                      <Tab style={{color: 'black', fontFamily: 'Source Serif Pro', width: '40%', padding: 0}} label="Password" />
-                      <Tab style={{color: 'black', fontFamily: 'Source Serif Pro', width: '40%', padding: 0}} label="PEM Key" />
-                    </Tabs>
-                  </AppBar>
-                  <TabPanel value={value} index={0}>
-                    <input className="w-full" type="password" name="password" required={true}
-                      onChange={handleChange}
-                      placeholder="**********"/>
-                  </TabPanel>
-                  <TabPanel value={value} index={1}>
-                    <input className="w-full" type="file" name="password" required={true}
-                      onChange={handleChange} accept=".pem" 
-                      placeholder="**********"/>
-                  </TabPanel>
-                </label>
+                  <label className="inputBlock ">
+                    <AppBar position="static">
+                      <Tabs value={value} onChange={handleValueChange}>
+                        <Tab style={styles.tabTextStyle} label="Password" />
+                        <Tab style={styles.tabTextStyle} label="PEM Key" />
+                      </Tabs>
+                    </AppBar>
+                    <TabPanel value={value} index={0}>
+                      <input className="w-full" type="password" name="password" required={true}
+                        onChange={handleChange}
+                        placeholder="**********"/>
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                      <input className="w-full" type="file" name="password" required={true}
+                        onChange={handleChange} accept=".pem" 
+                        placeholder="**********"/>
+                    </TabPanel>
+                  </label>
 
-                <label className="inputBlock ">
-                    <span>Description</span>
-                    <input className="w-full" type="text" name="desc"
-                    onChange={handleChange} 
-                    placeholder="This is the local IP Address"/>
-                </label>
+                  <label className="inputBlock ">
+                      <span>Description</span>
+                      <input className="w-full" type="text" name="desc"
+                      onChange={handleChange} 
+                      placeholder="This is the local IP Address"/>
+                  </label>
 
-                <input type="submit" value="Add IP" className="w-full buttonStyle" />
-            </form>
-          </div>
-        </Fade>
-      </Modal>
+                  <input type="submit" value="Add IP" className="w-full buttonStyle" />
+              </form>
+            </div>
+          </Fade>
+        </Modal>
+      </button>
     </div>
   );
 }

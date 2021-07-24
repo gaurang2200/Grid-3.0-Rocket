@@ -2,40 +2,89 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './login.css'
 
+const BASE_URL = "http://192.168.198.172:8080"
+
 class Login extends Component {
     constructor(){
         super();
-        axios.get('/api/login', (res) => {
+        this.state = {
+            username: "",
+            password: "",
+            errMessage: ""
+        };
+        this.handleChange = this.handleChange.bind(this);
+        this.handleErrMessage = this.handleErrMessage.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    
+    handleChange = (e) => {
+        let name = e.target.name;
+        let value = e.target.value;
+        this.setState({
+            [name]: value,
+        });
+    };
 
-        }).then(data => {
-            console.log(data.data)
+    handleErrMessage = (message) => {
+        this.setState({
+            errMessage: message
         })
     }
 
+    handleSubmit = (e) => {
+        e.preventDefault();
+        let {username, password} = this.state;
+        const requestHeaders = {
+            headers: { "Content-Type": "application/json" }
+        };
+
+        axios.post(
+            `${BASE_URL}/api/auth/login`,
+            {
+                username: username,
+                password: password
+            },
+            requestHeaders
+        ).then(res => {
+            window.location = '/dashboard';
+        }).catch(err => {
+            this.handleErrMessage(err.response.data.message)
+        })
+    }
+
+
     render() {
+        const {errMessage} = this.state;
         return (
-        <div className="bodyContainer">
-            <div className="container">
-                <div id="imagebg"></div>
-                <div id="detailsbg">
-                    <div id="details">
-                        <h1 className="loginHeading">Login</h1>
-                        <label className="inputBlock">
-                            <span>Email</span>
-                            <input className="w-full" type="email" required={true} placeholder="janedoe@gmail.com"/>
-                        </label>
-                        <label className="inputBlock ">
-                            <span>Password</span>
-                            <input className="w-full" type="password" required={true} placeholder="**********"/>
-                        </label>
+            <div className="bodyContainer">
+                <div className="container">
+                    <div id="imagebg"></div>
+                    <div id="detailsbg">
+                        <form onSubmit={this.handleSubmit}>
+                            <div id="details">
+                                <h1 className="loginHeading">Login</h1>
+                                <label className="inputBlock">
+                                    <span>Username</span>
+                                    <input className="w-full" type="text" name="username" required={true}
+                                    value={this.state.username} onChange={this.handleChange} 
+                                    placeholder="hackingguy"/>
+                                </label>
+                                <label className="inputBlock ">
+                                    <span>Password</span>
+                                    <input className="w-full" type="password" name="password" required={true}
+                                    value={this.state.password} onChange={this.handleChange} 
+                                    placeholder="**********"/>
+                                </label>
+                            </div>
+                            <div className="errInfo">{errMessage}</div>
+                            <input type="submit" value="Log in" className="w-full buttonStyle" />
+                        </form>
+                        <p className="margin1">
+                            <a href="./register" className="links">Create Account</a>
+                        </p>
                     </div>
-                    <a href='../dashboard' className="w-full buttonStyle">Log in</a>
-                    <p className="margin1">
-                        <a href="../register" className="links">Create Account</a>
-                    </p>
                 </div>
             </div>
-        </div>
         )
     }
 }
