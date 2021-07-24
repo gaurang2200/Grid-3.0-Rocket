@@ -3,6 +3,7 @@
 import Express from 'express'
 import cors from 'cors'
 import helmet from 'helmet'
+import cookieParser from 'cookie-parser'
 import Routes from './api/routes'
 import { SERVER_CONFIG } from './config'
 import startServer from './startServer'
@@ -18,6 +19,7 @@ const corsOptions = {
 
 // Middleware Initializations
 app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(Express.json({ limit: BODY_LIMIT }))
 app.use(Express.urlencoded({ limit: BODY_LIMIT, extended: true }))
 app.use(helmet())
