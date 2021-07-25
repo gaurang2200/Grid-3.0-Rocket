@@ -3,14 +3,14 @@
 import AssetRouter from './Asset'
 import KibanaRouter from './Kibana'
 import AuthRouter from './Auth'
+import FrontendRouter from './FrontendRoutes'
+import path from 'path';
 
 const Routes = [
   { path:'/api/ip/',router: AssetRouter },
   { path:'/api/kibana/',router:KibanaRouter },
   { path:'/api/auth',router:AuthRouter },
-  { path:'/api/hello', router:(req, res) => {
-    res.send("Hello World")
-  }}
+  { path:'/', router:FrontendRouter }
 ]
 
 Routes.init = (app) => {
@@ -25,12 +25,16 @@ Routes.init = (app) => {
   Routes.forEach((route) => app.use(route.path, route.router))
 
   // Final Route Pipeline
-  app.use("*", (request, response) => {
-    return response.status(404).send({
-      error:true,
-      message:"Route Not Defined"
-    })
-  })
+  // app.use("*", (request, response) => {
+  //   return response.status(404).send({
+  //     error:true,
+  //     message:"Route Not Defined"
+  //   })
+  // })
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../../../Frontend", "build", "index.html"));
+  });
 
 }
 

@@ -330,11 +330,11 @@ function AddIP(){
             </Fade>
           </Modal>
         </button>
-        <div style={{float:'right'}}>
+        {/* <div style={{float:'right'}}>
           <button onClick={decrementPage} className="pageArrowStyle" value="<">&lt;</button>
           {page}
           <button onClick={incrementPage} className="pageArrowStyle" value="<">&gt;</button>
-        </div>
+        </div> */}
       </div>
       <ToastContainer />
     </div>
