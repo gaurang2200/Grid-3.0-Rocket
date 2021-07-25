@@ -74,7 +74,7 @@ async function findAndUpdate(body){
 }
 
 async function findAllIP(page,limit){
-  limit=min(30,limit);
+  limit=Math.min(30,limit);
   let assets = await AssetDAO.getPage(page,limit)
   if(!assets) return { status:404, isError:true,message:"No Assets Found" }
   return { status:200, isError:false,message:assets }

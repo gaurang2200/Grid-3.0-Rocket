@@ -3,7 +3,8 @@ import {withStyles, makeStyles } from '@material-ui/core/styles';
 import {
     IconButton, Table, TableBody, 
     TableCell, TableContainer, 
-    TableHead, TableRow, Paper
+    TableHead, TableRow, Paper, 
+    Typography, TablePagination
 } 
 from '@material-ui/core/';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -22,7 +23,7 @@ const StyledTableCell = withStyles((theme) => ({
         backgroundColor: '#333333',
         color: theme.palette.common.white,
         fontWeight: 'bold',
-        width: '10rem',
+        width: '15rem',
     },
     body: {
         fontSize: 14,
@@ -56,29 +57,53 @@ const useStyles = makeStyles((theme) => ({
 
 const DataTable = (props) => {
     const classes = useStyles();
+    const {table, handleDelete} = props;
 
+    if(table === null){
+        return (
+            <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>
+            <Table className={classes.table} aria-label="Data Table">
+                <TableHead>
+                    <TableRow>
+                        <StyledTableCell>Username</StyledTableCell>
+                        <StyledTableCell align="right">IP Address</StyledTableCell>
+                        <StyledTableCell align="right">Port Number</StyledTableCell>
+                        <StyledTableCell align="right">Operating System</StyledTableCell>
+                        <StyledTableCell align="left">Actions</StyledTableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody style={{alignItems:'center'}}>
+                <Typography variant="h6" gutterBottom>
+                    No Data Available
+                </Typography>
+                </TableBody>
+            </Table>
+        </TableContainer>
+        )
+    } else 
     return (
+        <div>
         <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>
             <Table className={classes.table} aria-label="Data Table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>IP Name</StyledTableCell>
+                        <StyledTableCell>Username</StyledTableCell>
                         <StyledTableCell align="right">IP Address</StyledTableCell>
-                        <StyledTableCell align="right">IP Username</StyledTableCell>
-                        <StyledTableCell align="right">Description</StyledTableCell>
+                        <StyledTableCell align="right">Port Number</StyledTableCell>
+                        <StyledTableCell align="right">Operating System</StyledTableCell>
                         <StyledTableCell align="left">Actions</StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {props.table.map((row, index) => (
+                {table.map((row, index) => (
                     <StyledTableRow key={row.ip}>
                         <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
                         <StyledTableCell align="right">{row.ip}</StyledTableCell>
-                        <StyledTableCell align="right">{row.ipName}</StyledTableCell>
-                        <StyledTableCell align="right" compnent="th" scope="row">{row.desc}</StyledTableCell>
+                        <StyledTableCell align="right">{row.port}</StyledTableCell>
+                        <StyledTableCell align="right">{row.os}</StyledTableCell>
                         <StyledTableCell style={{display: 'flex'}}>
                             <IconButton
-                                onClick={() => props.handleDelete(row.ip)}
+                                onClick={() => handleDelete(row.ip)}
                                 className={[classes.iconStyle, classes.deleteStyle].join(" ")}
                                 aria-label="more"
                                 aria-controls="long-menu"
@@ -93,6 +118,7 @@ const DataTable = (props) => {
                 </TableBody>
             </Table>
         </TableContainer>
+        </div>
     );
 }
 

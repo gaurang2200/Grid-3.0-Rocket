@@ -1,13 +1,11 @@
+import React, {useEffect, useState} from 'react';
+import axios from 'axios';
 // Close Add ip form
 // Print Errors on the form
 // Table size should be constant
 // Add Os and Port in the form
 
-const getData = (pg) => {
-  axios.get(`/api/ip/all?page=${pg}`, { withCredentials: true })
-}
-
-const ipData = [{
+const getData = [{
   'username': 'Admin Super Pro Max',
   'ip': '192.172.212.119',
   'ipName': 'Local-IP',
@@ -39,5 +37,3 @@ const ipData = [{
   'desc': 'This is an Example of a long long long description'
 }
 ]
-
-export default ipData;

@@ -5,8 +5,6 @@ import '../Login/login.css';
 import './register.css';
 import '../Regex';
 
-const BASE_URL = "http://192.168.198.172:8080"
-
 function validate(username, password, confirmPassword){
     if( username.length === 0){
         return "Username Cannot be Empty"

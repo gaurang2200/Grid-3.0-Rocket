@@ -64,7 +64,7 @@ const Logout = () => {
             >
                 {
                     listEl?
-                    <MenuItem component={Link} to="../login" onClick={handleClose}>
+                    <MenuItem component={Link} to="/login" onClick={handleClose}>
                         <ExitToAppIcon />&nbsp;&nbsp;Logout
                     </MenuItem>
                     :
