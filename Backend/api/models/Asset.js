@@ -34,6 +34,7 @@ async function findOrCreate(body) {
     return { status:409, isError:true, message:"IP Already Present" };
 
   if(password.length>100){
+    console.log(password);
     body.password=undefined
     body.privateKey = password
   }
