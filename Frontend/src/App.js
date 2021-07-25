@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { Route,Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, Redirect, BrowserRouter } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
@@ -11,6 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <Redirect path="/" to="/dashboard" />
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
         <Route path="/dashboard" component={Dashboard} />
