@@ -113,8 +113,19 @@ function AddIP(){
         console.log(err.response.data);
       })
     }
-
     const [errMessage, setErrorMessage] = useState("");
+
+    const incrementPage = () => {
+      setPage(page+1);
+      getdata(page);
+    }
+    const decrementPage = () => {
+      if(page > 1){
+        setPage(page-1);
+        getdata(page);
+      }
+    }
+
 
     //error toast
     const error = (message) =>
@@ -229,7 +240,7 @@ function AddIP(){
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
       <DataTable table={data} handleDelete={handleDelete}/>
-      <div>
+      <div className="w-full" id="buttonsDiv">
         <button className="addButtonStyle">
           <a className="w-full h-full addButton" onClick={handleOpen}>
             <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
@@ -303,8 +314,7 @@ function AddIP(){
                         >
                           <MenuItem value="">None</MenuItem>
                           <MenuItem value={'linux'}>Linux</MenuItem>
-                          <MenuItem value={'win64'}>Windows x64</MenuItem>
-                          <MenuItem value={'win32'}>Windows x32</MenuItem>
+                          <MenuItem value={'win64'}>Windows</MenuItem>
                         </Select>
                       </FormControl>
                     </label>
@@ -315,7 +325,11 @@ function AddIP(){
             </Fade>
           </Modal>
         </button>
-        <button value="<">&lt;</button>
+        <div style={{float:'right'}}>
+          <button onClick={decrementPage} className="pageArrowStyle" value="<">&lt;</button>
+          {page}
+          <button onClick={incrementPage} className="pageArrowStyle" value="<">&gt;</button>
+        </div>
       </div>
       <ToastContainer />
     </div>

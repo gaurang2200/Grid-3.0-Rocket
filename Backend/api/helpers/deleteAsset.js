@@ -1,4 +1,4 @@
-import client from "../../config";
+import {client} from "../../config";
 
 async function deleteAsset(ip,os) {
   try {
@@ -13,7 +13,9 @@ async function deleteAsset(ip,os) {
       }
     })
   }
-  catch { }
+  catch (err) {
+    console.log(err)
+  }
 }
 
 

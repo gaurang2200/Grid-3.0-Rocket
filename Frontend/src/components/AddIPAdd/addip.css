@@ -13,17 +13,52 @@
     margin: 1.5em;
     width: 20%;
     min-width: 15em;
-    background-color: #36da6d;
+    background-color: #fdc732;
     float: right;
     padding: 0em 1em;
     transition: all 0.3s;
     border-radius: 10px;
     height: 4em;
+    box-shadow: rgb(112, 112, 1) 0em 0.5em 1em;
 }
 
 .addButtonStyle:hover{
     background-color: cornflowerblue;
+    box-shadow: rgb(8, 1, 112) 0em 0.5em 1em;
 }
+
+#buttonsDiv{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pageArrowStyle{
+    width: 4em;
+    height: 3em;
+    cursor: pointer;
+    border-radius: 5px;
+    margin: 0 1em;
+    transition: all 0.3s;
+}
+
+.pageArrowStyle:hover{
+    border: solid 1px #fdc732
+}
+
+
+.actionTextStyle{
+    font-size: 0.9rem;
+    color: white;
+
+}
+
+.actionTextStyle:hover{
+    color: black;
+
+}
+
 
 h2 {
     margin-block-end: 0em;
