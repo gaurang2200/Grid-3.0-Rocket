@@ -41,4 +41,4 @@ AssetRouter.post('/update',decryptJWT,update)
   * Get All IP Addresses
   * @GET /api/ip/all
 */
-AssetRouter.post('/all',decryptJWT,all)
+AssetRouter.get('/all',decryptJWT,all)

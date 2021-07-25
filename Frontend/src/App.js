@@ -16,7 +16,6 @@ function App() {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/kibana" component={Kibana} />
         <Route path='/fourOfour' component={fourOfour} />
-        <Redirect to='/fourOfour' />
       </div>
     </BrowserRouter>
   );

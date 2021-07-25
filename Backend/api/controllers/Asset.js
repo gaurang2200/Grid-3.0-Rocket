@@ -45,8 +45,8 @@ async function get(request,response){
 
 async function all(request,response){
   if(!request.id) return response.send(responseBody(true,"Unauthorized"))
-  const { page=10,limit=10 } = request.query
-  const { status=200,isError=false, message='' } = await AssetModel.findAllIP(page,limit)
+  const { page=1,limit=10 } = request.query
+  const { status=200,isError=false, message='' } = await AssetModel.findAllIP(page-1,limit)
   let res = responseBody(isError,message)
   response.status(status).send(res)
 }

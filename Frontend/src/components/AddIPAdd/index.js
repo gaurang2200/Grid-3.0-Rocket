@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import './addip.css';
@@ -10,7 +10,6 @@ from '@material-ui/core';
 import DataTable from '../DataTable';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import axios from 'axios';
-import ipData from '../GetData';
 
 
 function TabPanel(props) {
@@ -91,23 +90,38 @@ function AddIP(){
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
+    const [page, setPage] = useState(1);
     const [state, setState] = useState({
         username: "",
         ip: "",
         port: "",
         password: "",
-        desc: "",
         os:""
     });
-    const [data, setData] = useState(ipData);
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+      getdata(page);
+    }, []);
+
+    const getdata = (pg) => {
+      axios.get(`/api/ip/all?page=${pg}`, { withCredentials: true })
+      .then(res => {
+        const notes = res.data.message;
+        setData(notes);
+      }).catch(err => {
+        console.log(err.response.data);
+      })
+    }
+
     const [errMessage, setErrorMessage] = useState("");
 
     //error toast
     const error = (message) =>
-    toast.error("❌ " + message, {
+    toast.error("❌\t" + message, {
         position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: true,
+        autoClose: 4000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
@@ -115,9 +129,9 @@ function AddIP(){
     });
 
     const success = (message) =>
-    toast.success("🦄" + message, {
+    toast.success("🦄\t" + message, {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 4000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
@@ -157,7 +171,7 @@ function AddIP(){
           return {...prevState, [propName]: value}
         })
     }
-    
+
     // For deleting an existing entry
     const handleDelete = (ip) => {
       console.log(ip);
@@ -165,10 +179,8 @@ function AddIP(){
       axios.post(
         `/api/ip/delete`,
         { ip: ip }
-      ).then(res => {
-        console.log("Item Deleted Successfully");
-        
-        success(res.message);
+      ).then(res => {        
+        success("Item Deleted Successfully");
         const newData = [...data];
         const index = data.findIndex((entry) => entry.ip === ip);
         newData.splice(index, 1);
@@ -217,98 +229,94 @@ function AddIP(){
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
       <DataTable table={data} handleDelete={handleDelete}/>
-      <button className="addButtonStyle">
-        <a className="w-full h-full addButton" onClick={handleOpen}>
-          <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
-        </a>
-        <Modal
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <h2 id="transition-modal-title">Add an IP Address</h2>
-              <div className="errInfo">{errMessage}</div>
-              <form onSubmit={handleOnSubmit}>
+      <div>
+        <button className="addButtonStyle">
+          <a className="w-full h-full addButton" onClick={handleOpen}>
+            <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
+          </a>
+          <Modal
+            className={classes.modal}
+            open={open}
+            onClose={handleClose}
+            closeAfterTransition
+            BackdropComponent={Backdrop}
+            BackdropProps={{
+              timeout: 500,
+            }}
+          >
+            <Fade in={open}>
+              <div className={classes.paper}>
+                <h2 id="transition-modal-title">Add an IP Address</h2>
+                <div className="errInfo">{errMessage}</div>
+                <form onSubmit={handleOnSubmit}>
 
-                  <label className="inputBlock">
-                      <span>Username</span>
-                      <input className="w-full" type="text" name="username" required={true}
-                      onChange={handleChange} value={state.username}
-                      placeholder="Administrator"/>
-                  </label>
+                    <label className="inputBlock">
+                        <span>Username</span>
+                        <input className="w-full" type="text" name="username" required={true}
+                        onChange={handleChange} value={state.username}
+                        placeholder="Administrator"/>
+                    </label>
 
-                  <label className="inputBlock ">
-                      <span>IP Address</span>
-                      <input className="w-full" type="text" name="ip" required={true}
-                      onChange={handleChange} value={state.ip}
-                      placeholder="127.0.0.1"/>
-                  </label>
+                    <label className="inputBlock ">
+                        <span>IP Address</span>
+                        <input className="w-full" type="text" name="ip" required={true}
+                        onChange={handleChange} value={state.ip}
+                        placeholder="127.0.0.1"/>
+                    </label>
 
-                  <label className="inputBlock">
-                      <span>Port Number</span>
-                      <input className="w-full" type="number" name="port" required={true}
-                      onChange={handleChange} value={state.port}
-                      placeholder="22"/>
-                  </label>
+                    <label className="inputBlock">
+                        <span>Port Number</span>
+                        <input className="w-full" type="number" name="port" required={true}
+                        onChange={handleChange} value={state.port}
+                        placeholder="22"/>
+                    </label>
 
-                  <label>
-                    <AppBar position="static">
-                      <Tabs value={value} onChange={handleValueChange}>
-                        <Tab style={styles.tabTextStyle} label="Password" />
-                        <Tab style={styles.tabTextStyle} label="PEM Key" />
-                      </Tabs>
-                    </AppBar>
-                    <TabPanel value={value} index={0}>
-                      <input className="w-full" type="password" name="password" required={true}
-                        onChange={handleChange}
-                        placeholder="**********"/>
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                      <input className="w-full" type="file" name="password" required={true}
-                        onChange={handleChange} accept=".pem" 
-                        placeholder="**********"/>
-                    </TabPanel>
-                  </label>
-                  
-                  <label className="inputBlock">
-                    <FormControl className={classes.formControl} required>
-                      <span>Operating System</span>
-                      <Select
-                        value={state.os}
-                        onChange={handleChange}
-                        name="os"
-                        displayEmpty
-                        className={[classes.selectEmpty, "w-full"].join(' ')}
-                        inputProps={{ 'aria-label': 'Without label' }}
-                      >
-                        <MenuItem value="">None</MenuItem>
-                        <MenuItem value={'linux'}>Linux</MenuItem>
-                        <MenuItem value={'win64'}>Windows x64</MenuItem>
-                        <MenuItem value={'win32'}>Windows x32</MenuItem>
-                      </Select>
-                    </FormControl>
-                  </label>
+                    <label>
+                      <AppBar position="static">
+                        <Tabs value={value} onChange={handleValueChange}>
+                          <Tab style={styles.tabTextStyle} label="Password" />
+                          <Tab style={styles.tabTextStyle} label="PEM Key" />
+                        </Tabs>
+                      </AppBar>
+                      <TabPanel value={value} index={0}>
+                        <input className="w-full" type="password" name="password" required={true}
+                          onChange={handleChange}
+                          placeholder="**********"/>
+                      </TabPanel>
+                      <TabPanel value={value} index={1}>
+                        <input className="w-full" type="file" name="password" required={true}
+                          onChange={handleChange} accept=".pem" 
+                          placeholder="**********"/>
+                      </TabPanel>
+                    </label>
+                    
+                    <label className="inputBlock">
+                      <FormControl className={[classes.formControl, "w-full"].join(' ')} required>
+                        <span>Operating System</span>
+                        <Select
+                          value={state.os}
+                          onChange={handleChange}
+                          name="os"
+                          displayEmpty
+                          className={[classes.selectEmpty, "w-full"].join(' ')}
+                          inputProps={{ 'aria-label': 'Without label' }}
+                        >
+                          <MenuItem value="">None</MenuItem>
+                          <MenuItem value={'linux'}>Linux</MenuItem>
+                          <MenuItem value={'win64'}>Windows x64</MenuItem>
+                          <MenuItem value={'win32'}>Windows x32</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </label>
 
-                  <label className="inputBlock ">
-                      <span>Description</span>
-                      <input className="w-full" type="text" name="desc"
-                      onChange={handleChange} value={state.desc}
-                      placeholder="This is the local IP Address"/>
-                  </label>
-
-                  <input type="submit" value="Add IP" className="w-full buttonStyle" />
-              </form>
-            </div>
-          </Fade>
-        </Modal>
-      </button>
+                    <input type="submit" value="Add IP" className="w-full buttonStyle" />
+                </form>
+              </div>
+            </Fade>
+          </Modal>
+        </button>
+        <button value="<">&lt;</button>
+      </div>
       <ToastContainer />
     </div>
   );
