@@ -1,6 +1,13 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
+const styles = {
+    fullSize: {
+        width: '100%',
+        height: '100%'
+    }
+}
+
 class Kibana extends Component {
     constructor(){
         super();
@@ -24,8 +31,8 @@ class Kibana extends Component {
 
     render(){
         return (
-            <div className="w-full h-full">
-                <iframe title="Kibana" className="w-full h-full" src={this.state.url} />
+            <div style={styles.fullSize}>
+                <iframe style={styles.fullSize} src={this.state.url} />
             </div>
         );
     }

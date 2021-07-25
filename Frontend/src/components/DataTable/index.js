@@ -10,14 +10,6 @@ from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
-const styles = {
-    actionTextStyle:{
-        fontSize: '0.9rem',
-        color: 'black'
-    }
-}
-
-
 const StyledTableCell = withStyles((theme) => ({
     head: {
         backgroundColor: '#333333',
@@ -50,7 +42,8 @@ const useStyles = makeStyles((theme) => ({
         marginRight: '1rem'
     },
     deleteStyle:{
-        backgroundColor: '#FF375FDD'
+        color: 'white',
+        backgroundColor: '#D95350'
     }
 }))
 
@@ -104,13 +97,13 @@ const DataTable = (props) => {
                         <StyledTableCell style={{display: 'flex'}}>
                             <IconButton
                                 onClick={() => handleDelete(row.ip)}
-                                className={[classes.iconStyle, classes.deleteStyle].join(" ")}
+                                className={[classes.iconStyle, classes.deleteStyle, "actionTextStyle"].join(" ")}
                                 aria-label="more"
                                 aria-controls="long-menu"
                                 aria-haspopup="true"
                             >
                                 <DeleteIcon />
-                                <span style={styles.actionTextStyle}>Delete</span>
+                                <span style={{fontSize: '0.9rem'}}>Delete</span>
                             </IconButton>
                         </StyledTableCell>
                     </StyledTableRow>
