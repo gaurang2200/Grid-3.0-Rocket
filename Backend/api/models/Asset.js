@@ -5,23 +5,21 @@ const AssetModel = {
   findOrCreate,
   findAndDelete,
   findAndUpdate,
-  findByIP
+  findByIP,
+  findAllIP
 }
 
 export default AssetModel
 
 
-async function findByIP(body){
-  const { ip } = body;
+async function findByIP(ip){
+
   if(!ip)
     return { status:400 ,isError:true, message:"All Fields Required"}
 
-  let asset = await AssetDAO.findByIP(ip)
+  let assets = await AssetDAO.findByIP(ip)
 
-  if(!asset)
-    return {status:404, isError:true, message:"Unable to get Asset"}
-
-  return { status:200, isError: false, message:asset }
+  return { status:200, isError: false, message:assets }
 }
 
 async function findOrCreate(body) {
@@ -68,4 +66,11 @@ async function findAndUpdate(body){
 
   AssetDAO.updateByIP(ip,update)
   return {status:200,isError:false,message:"Updated Successfully"};
+}
+
+async function findAllIP(page,limit){
+  limit=min(30,limit);
+  let assets = await AssetDAO.getPage(page,limit)
+  if(!assets) return { status:404, isError:true,message:"No Assets Found" }
+  return { status:200, isError:false,message:assets }
 }

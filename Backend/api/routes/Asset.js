@@ -7,7 +7,7 @@ const AssetRouter = new Express.Router()
 export default AssetRouter
 
 const {decryptJWT} = JWTHelper
-const { get,create,del,update } = AssetController
+const { get,create,del,update,all } = AssetController
 
 /**
   * Add IP Address to the list
@@ -18,21 +18,27 @@ AssetRouter.post('/add',decryptJWT,create)
 
 /**
   * Add IP Address to the list
-  * @POST /ip/delete
+  * @POST /api/ip/delete
   * @body Requires ip
 */
 AssetRouter.post('/delete',decryptJWT,del)
 
 /**
   * Add IP Address to the list
-  * @POST /ip/get
+  * @POST /api/ip/search
   * @body Requires ip
 */
-AssetRouter.get('/get',decryptJWT,get)
+AssetRouter.get('/search',decryptJWT,get)
 
 /**
   * Add IP Address to the list
-  * @POST /ip/update
+  * @POST /api/ip/update
   * @body Requires ip and update object with key value pair to update
 */
 AssetRouter.post('/update',decryptJWT,update)
+
+/**
+  * Get All IP Addresses
+  * @GET /api/ip/all
+*/
+AssetRouter.post('/all',decryptJWT,all)

@@ -9,7 +9,8 @@ const AssetDAO = {
   findByIP,
   getAllIps,
   deleteByIP,
-  updateByIP
+  updateByIP,
+  getPage
 }
 
 export default AssetDAO
@@ -39,4 +40,8 @@ async function deleteByIP(ip){
 
 async function updateByIP(ip,update){
   return await mongoModel.findOneAndUpdate({ip:ip},update);
+}
+
+async function getPage(page,limit){
+  return await mongoModel.find({}).skip(page*limit).select({privateKey:0,password:0,__v:0})
 }
