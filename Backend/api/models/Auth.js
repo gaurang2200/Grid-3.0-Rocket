@@ -23,6 +23,8 @@ async function login(body) {
   if (!username || !password)
     return { status: 400, isError: true, message: "All Fields Required" }
   let user = await AuthDAO.findUser(body)
+  if(!user)
+    return { status: 400, isError: true, message: "User not found"}
   let c = await crypter.verify(password, user.password)
   if (!c) return { status: 403, isError: true, message: "Authorization Failed" }
   return { _id: user.id, status: 200, isError: false, message: "Logged In Successfully" }

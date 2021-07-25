@@ -12,7 +12,7 @@ const AssetController = {
 export default AssetController
 
 async function create(request,response){
-  if(!request.id) return response.send(responseBody(403,"Unauthorized"))
+  if(!request.id) return response.status(403).send(responseBody(true,"Unauthorized"))
   const { body={} } = request
   const { status=200,isError=false, message='' } = await AssetModel.findOrCreate(body)
   let res = responseBody(isError,message)
@@ -20,7 +20,7 @@ async function create(request,response){
 }
 
 async function del(request,response){
-  if(!request.id) return response.send(responseBody(403,"Unauthorized"))
+  if(!request.id) return response.status(403).send(responseBody(true,"Unauthorized"))
   const { body={} } = request
   const { status=200,isError=false, message='' } = await AssetModel.findAndDelete(body)
   let res = responseBody(isError,message)
@@ -28,7 +28,7 @@ async function del(request,response){
 }
 
 async function update(request,response){
-  if(!request.id) return response.send(responseBody(403,"Unauthorized"))
+  if(!request.id) return response.status(403).send(responseBody(true,"Unauthorized"))
   const { body={} } = request
   const { status=200,isError=false, message='' } = await AssetModel.findAndUpdate(body)
   let res = responseBody(isError,message)
@@ -36,7 +36,7 @@ async function update(request,response){
 }
 
 async function get(request,response){
-  if(!request.id) return response.send(responseBody(403,"Unauthorized"))
+  if(!request.id) return response.send(responseBody(true,"Unauthorized"))
   const { ip } = request.query
   const { status=200,isError=false, message='' } = await AssetModel.findByIP(ip)
   let res = responseBody(isError,message)
@@ -44,7 +44,7 @@ async function get(request,response){
 }
 
 async function all(request,response){
-  if(!request.id) return response.send(responseBody(403,"Unauthorized"))
+  if(!request.id) return response.send(responseBody(true,"Unauthorized"))
   const { page=10,limit=10 } = request.query
   const { status=200,isError=false, message='' } = await AssetModel.findAllIP(page,limit)
   let res = responseBody(isError,message)

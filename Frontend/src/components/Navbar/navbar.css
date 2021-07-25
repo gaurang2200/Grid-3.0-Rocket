@@ -11,7 +11,7 @@
     background-color: var(--dbColor);
     display: grid;
     grid-template-columns: 1fr 4fr 0.5fr;
-    z-index: 1;
+    z-index: 99;
 }
 
 #after, #menuButton{

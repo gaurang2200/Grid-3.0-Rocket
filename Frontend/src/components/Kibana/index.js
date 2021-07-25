@@ -1,11 +1,34 @@
-import React from 'react';
+import React, {useState, Component} from 'react';
+import axios from 'axios';
 
-const Kibana = () => {
-    return (
-        <div className="w-full h-full">
-            <iframe className="w-full h-full" src="https://kibana.grid-rocket.ml/" />
-        </div>
-    );
+class Kibana extends Component {
+    constructor(){
+        super();
+        this.state = {
+            url: ''
+        }
+    }
+
+    componentDidMount() {
+        axios.get(
+            '/api/kibana',
+            {withCredentials: true}
+        ).then(res => {
+            this.setState({
+                url: res.data.message
+            })
+        }).catch(err => {
+            window.location = '/login';
+        })
+    }
+
+    render(){
+        return (
+            <div className="w-full h-full">
+                <iframe className="w-full h-full" src={this.state.url} />
+            </div>
+        );
+    }
 }
 
 export default Kibana;

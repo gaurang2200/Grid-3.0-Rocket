@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import './login.css'
 
-const BASE_URL = "http://192.168.198.172:8080"
+// const BASE_URL = "http://192.168.198.172:8080"
 
 class Login extends Component {
     constructor(){
@@ -34,17 +34,18 @@ class Login extends Component {
     handleSubmit = (e) => {
         e.preventDefault();
         let {username, password} = this.state;
-        const requestHeaders = {
-            headers: { "Content-Type": "application/json" }
+        const axiosOptions = {
+            headers: { "Content-Type": "application/json" },
+            withCredentials: true
         };
 
         axios.post(
-            `${BASE_URL}/api/auth/login`,
+            `/api/auth/login`,
             {
                 username: username,
                 password: password
             },
-            requestHeaders
+            axiosOptions
         ).then(res => {
             window.location = '/dashboard';
         }).catch(err => {

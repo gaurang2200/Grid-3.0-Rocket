@@ -1,57 +1,75 @@
-import { Client } from 'ssh2'
-import minify from './Minifier'
+import { Client } from "ssh2";
+import minify from "./Minifier";
 
-const ssh2 = new Client()
+const ssh2 = new Client();
 
-export default async (host, port, os, user, password, privateKey) => {
-
+export default async (ip, port, os, user, password, privateKey) => {
   return new Promise((resolve, reject) => {
+    let result = "";
 
-    let result = ""
+    ssh2
+      .on("ready", () => {
+        console.log("Client :: ready");
 
-    ssh2.on('ready', () => {
+        var script;
 
-      console.log('Client :: ready');
+        if (os == "win64" || os == "win32")
+          script = `powershell -command "${minify(
+            process.env.PS_SCRIPT_PATH
+          )}`;
+        else script = minify(process.env.SH_SCRIPT_PATH);
 
-      var script;
+        ssh2.exec(script, (err, stream) => {
+          if (err) console.error(err.message);
 
-      if (os == 'win64' || os == 'win32')
-        script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`
-      else
-        script = minify(process.env.SH_SCRIPT_PATH);
+          stream
+            .on("close", (code, signal) => {
+              console.log(
+                "Stream :: close :: code: " + code + ", signal: " + signal
+              );
+              try{
+                console.log(result);
+                result = JSON.parse(result);
+                result["active"] = true;
+                result["ip"] = ip;
+                resolve(result);
+              } catch (err) {
+                console.log(err);
+              }
+              ssh2.end();
+            })
+            .on("data", (data) => {
+              try {
+                // console.log(data.toString("utf8"));
+                // data = JSON.parse(data.toString("utf8"));
+                result += data.toString("utf8");
+              } catch (err) {
+                console.log(err)
+              }
+            })
+            .stderr.on("data", (data) => {
+              console.log("STDERR: " + data);
+            })
 
-      ssh2.exec(script, (err, stream) => {
-
-        if (err) console.error(err.message);
-
-        stream.on('close', (code, signal) => {
-          console.log('Stream :: close :: code: ' + code + ', signal: ' + signal)
-          ssh2.end()
-          resolve(result)
-        }).on('data', (data) => {
-          try {
-            data = JSON.parse(data.toString('utf8'))
-            result = data
-          }
-          catch { }
-        }).stderr.on('data', (data) => {
-          console.log('STDERR: ' + data);
+          process.on("uncaughtException", (err) => {
+            console.log(`Error Ignored`);
+          });
         });
-
-        process.on('uncaughtException', (err) => {
-          console.log(`Error Ignored`)
-        })
-
+      })
+      .connect({
+        host: ip,
+        port: port,
+        username: user,
+        password: password,
+        readyTimeout: 5000,
       });
-    }).connect({
-      host: host,
-      port: port,
-      username: user,
-      password: password
-    });
-  })
-}
 
+      ssh2.on('error', (err) => {
+        console.log(err)
+        reject(err)
+      })
+  });
+};
 
 /*
 Object Structure:

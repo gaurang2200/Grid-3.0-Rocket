@@ -38,16 +38,17 @@ foreach($adsiObj in $computer.psbase.children)
     }
 }
 
-$workgroups = $workgroups | select-object Computername, ParentGroup, NameMember, TypeMember, PathMember, isGroupMember, Depth;
+$workgroups = $workgroups | select-object PathMember;
 
-$workgroups = ($workgroups | ConvertTo-JSON -Compress);
+$workgroups = ($workgroups);
 
-$domainInfo = (Get-ADDomain | ConvertTo-JSON -Compress);
+$domainInfo = (Get-ADDomain);
 
 $mac = Get-WmiObject win32_networkadapterconfiguration | Select-Object -Property @{
     Name = "IPAddress";
     Expression = {($PSItem.IPAddress[0]);}
-  }, MacAddress | Where IPAddress -NE $null | ConvertTo-JSON -Compress;
+  }, MacAddress | Where IPAddress -NE $null;
+$mac = $mac[0].MacAddress;
 
 $hostname = (hostname);
 $publicIP = $(Resolve-DnsName -Name myip.opendns.com -Server 208.67.222.220).IPAddress;
@@ -56,8 +57,9 @@ $result = @{
     "publicIP" = $publicIP;
     "mac" = $mac;
     "hostName" = $hostName;
-    "domainInfo" = $domainInfo;
-    "workGroups" = $workGroups;
+    "domain" = $domainInfo;
+    "groups" = $workgroups;
+    "os" = "windows";
 };
 
 $result | ConvertTo-JSON

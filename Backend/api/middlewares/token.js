@@ -8,10 +8,10 @@ const JWTHelper = {
 export default JWTHelper
 
 async function attachJWT(request,response){
-  let token = jwt.sign({id:request.id},process.env.JWT_SECRET_KEY, { expiresIn: 60 * 60 })
+  let token = jwt.sign({id:request.id},process.env.JWT_SECRET_KEY, { expiresIn:'24h'})
 
   response.cookie("jwt",token,{
-    maxAge:60*60,
+    maxAge:24*60*60*1000,
     httpOnly:true
   })
 }
