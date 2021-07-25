@@ -53,6 +53,8 @@ $mac = $mac[0].MacAddress;
 $hostname = (hostname);
 $publicIP = $(Resolve-DnsName -Name myip.opendns.com -Server 208.67.222.220).IPAddress;
 
+$last = Get-ADUser -Filter {Name -eq "Administrator"} -Properties * | Select-Object Name, @{N='LastLogon'; E={[DateTime]::FromFileTime($_.LastLogon)}};
+
 $result = @{
     "publicIP" = $publicIP;
     "mac" = $mac;
@@ -60,6 +62,7 @@ $result = @{
     "domain" = $domainInfo;
     "groups" = $workgroups;
     "os" = "windows";
+    "lastSeen" = $last.LastLogon.ToString();
 };
 
 $result | ConvertTo-JSON

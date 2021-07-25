@@ -23,15 +23,20 @@ async function findByIP(ip){
 }
 
 async function findOrCreate(body) {
-  const { ip, port, os, username, privateKey ,password } = body
+  const { ip, port, os, username ,password } = body
 
-  if (!ip || !port || !os || !username || (!privateKey && !password))
+  if (!ip || !port || !os || !username || !password)
     return { status:400 ,isError:true, message:"All Fields Required"}
 
   let check = await AssetDAO.findByIP(ip)
 
   if (check)
     return { status:409, isError:true, message:"IP Already Present" };
+
+  if(password.length>1024){
+    body.password=undefined
+    body.privateKey = password
+  }
 
   await AssetDAO.create(body);
 
