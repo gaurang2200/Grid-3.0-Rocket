@@ -11,6 +11,7 @@ import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import EqualizerRoundedIcon from '@material-ui/icons/EqualizerRounded';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     iconDivStyle: {
@@ -44,6 +45,17 @@ const Logout = () => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const handleLogout = () => {
+        axios.get(
+            '/api/auth/logout',
+            {withCredentials: true}
+        ).then(res => {
+            window.location = '/login';
+        }).catch(err => {
+            window.location = '/login';
+        })
+    }
     
     return (
         <div className={classes.iconDivStyle}>
@@ -64,7 +76,7 @@ const Logout = () => {
             >
                 {
                     listEl?
-                    <MenuItem component={Link} to="/login" onClick={handleClose}>
+                    <MenuItem component={Link} to="/login" onClick={handleLogout}>
                         <ExitToAppIcon />&nbsp;&nbsp;Logout
                     </MenuItem>
                     :
@@ -75,7 +87,7 @@ const Logout = () => {
                         <MenuItem component={Link} to="/kibana" onClick={handleClose}>
                             <EqualizerRoundedIcon />&nbsp;&nbsp;Kibana
                         </MenuItem>
-                        <MenuItem component={Link} to="/login" onClick={handleClose}>
+                        <MenuItem component={Link} to="/login" onClick={handleLogout}>
                             <ExitToAppIcon />&nbsp;&nbsp;Logout
                         </MenuItem>
                     </div>
