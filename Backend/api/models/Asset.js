@@ -1,5 +1,5 @@
 import { AssetDAO } from "../daos"
-import { scanAsset } from "../helpers"
+import { addAsset,deleteAsset } from "../helpers"
 
 const AssetModel = {
   findOrCreate,
@@ -33,14 +33,14 @@ async function findOrCreate(body) {
   if (check)
     return { status:409, isError:true, message:"IP Already Present" };
 
-  if(password.length>1024){
+  if(password.length>100){
     body.password=undefined
     body.privateKey = password
   }
 
   await AssetDAO.create(body);
 
-  scanAsset([body])
+  addAsset(body)
 
   return {status:200,isError:false,message:"Created Successfully"};
 }
@@ -56,6 +56,10 @@ async function findAndDelete(body) {
     return { status:400,isError:true,message:"IP not present in DB" }
 
   AssetDAO.deleteByIP(ip)
+
+  deleteAsset(ip, asset.os)
+
+
   return {status:200,isError:false,message:"Deleted Successfully"};
 }
 
