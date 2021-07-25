@@ -60,17 +60,17 @@ class Register extends Component {
             console.log(this.state.errMessage)
             return;
         }
-        const requestHeaders = {
+        const axiosOptions = {
             headers: { "Content-Type": "application/json" }
         };
 
         axios.post(
-            `${BASE_URL}/api/auth/register`,
+            `/api/auth/register`,
             {
                 username: username,
                 password: password
             },
-            requestHeaders
+            axiosOptions
         ).then((res) => {
             window.location = '/login';
         }).catch(err => {

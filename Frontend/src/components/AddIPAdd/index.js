@@ -1,13 +1,14 @@
 import React, {useState} from 'react';
 import './addip.css';
 import '../Navbar/navbar.css';
-import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import {Modal, Backdrop, Fade, AppBar, Tabs, Tab }
 from '@material-ui/core';
 import DataTable from '../DataTable';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import axios from 'axios';
+import ipData from '../GetData';
 
 
 function TabPanel(props) {
@@ -60,18 +61,37 @@ const styles = {
   }
 }
 
-function AddIP(props){
+function readFileDataAsBase64(file) {
+  return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+          resolve(event.target.result);
+      };
+
+      reader.onerror = (err) => {
+          reject(err);
+      };
+
+      reader.readAsDataURL(file);
+  });
+}
+
+
+function AddIP(){
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
     const [state, setState] = useState({
         username: "",
-        ipAdd: "",
+        ip: "",
+        port: 22,
         password: "",
         ipName: "",
-        desc: ""
+        desc: "",
+        os:""
     });
-    const [data, setData] = useState(props.table);
+    const [data, setData] = useState(ipData);
 
     const handleOpen = () => {
         setOpen(true);
@@ -83,7 +103,7 @@ function AddIP(props){
 
     const handleValueChange = (e, value) => {
       setValue(value);
-    }
+    };
 
     const handleChange = (e) => {
         e.preventDefault();
@@ -93,31 +113,72 @@ function AddIP(props){
 
         if(type === 'file'){
           value = e.target.files[0];
+          readFileDataAsBase64(value)
+          .then(res => {
+            res = res.replace('data:application/octet-stream;base64,', '');
+            value = res;
+          }).catch(err => {
+            console.log(err.message);
+          })
         }
         setState(prevState => {
           return {...prevState, [propName]: value}
         })
     }
+    
+    // For deleting an existing entry
+    const handleDelete = (ip) => {
+      console.log(ip);
+      const newData = [...data];
+      const index = data.findIndex((entry) => entry.ip === ip);
 
+      axios.post(
+        `/api/ip/delete`,
+        { ip: ip }
+      ).then(res => {
+        console.log("Item Deleted Successfully");
+        newData.splice(index, 1);
+        setData(newData);
+      }).catch(err => {
+        console.log(err.response.data.message);
+      })
+
+    }
+
+    // For adding a new Entry
     const handleOnSubmit = (e) => {
         e.preventDefault();
 
         const newData = {
           username: state.username,
-          ipAdd: state.ipAdd,
+          ip: state.ip,
           password: state.password,
+          port: state.port,
           ipName: state.ipName,
-          desc: state.desc
+          desc: state.desc,
+          os: state.os
         };
-
-        const newTable = [...data, newData];
-        setData(newTable)
-        console.log(state);
+        
+        axios.post(
+          '/api/ip/add',
+          newData
+        ).then(res => {
+          console.log(res.data)
+          const newTable = [...data, newData];
+          setData(newTable)
+        }).catch(err => {
+          console.log(err.response.data)
+          if(err.response.data.message === "Unauthorized")
+            window.location = '/login';
+          else {
+            
+          }
+        })
     }
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
-      <DataTable table={data} />
+      <DataTable table={data} handleDelete={handleDelete}/>
       <button className="addButtonStyle">
         <a className="w-full h-full addButton" onClick={handleOpen}>
           <AddCircleRoundedIcon />&nbsp;&nbsp;Add IP Addresses
@@ -146,7 +207,7 @@ function AddIP(props){
 
                   <label className="inputBlock ">
                       <span>IP Address</span>
-                      <input className="w-full" type="text" name="ipAdd" required={true}
+                      <input className="w-full" type="text" name="ip" required={true}
                       onChange={handleChange} 
                       placeholder="127.0.0.1"/>
                   </label>

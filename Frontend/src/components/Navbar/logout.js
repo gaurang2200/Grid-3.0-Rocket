@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {Link} from 'react-router-dom'
-import AddIP from '../AddIPAdd';
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
@@ -70,13 +69,13 @@ const Logout = () => {
                     </MenuItem>
                     :
                     <div>
-                        <MenuItem component={Link} to="../dashboard" onClick={handleClose}>
+                        <MenuItem component={Link} to="/dashboard" onClick={handleClose}>
                             <HomeRoundedIcon />&nbsp;&nbsp;Dashboard
                         </MenuItem>
-                        <MenuItem component={Link} to="../kibana" onClick={handleClose}>
+                        <MenuItem component={Link} to="/kibana" onClick={handleClose}>
                             <EqualizerRoundedIcon />&nbsp;&nbsp;Kibana
                         </MenuItem>
-                        <MenuItem component={Link} to="../login" onClick={handleClose}>
+                        <MenuItem component={Link} to="/login" onClick={handleClose}>
                             <ExitToAppIcon />&nbsp;&nbsp;Logout
                         </MenuItem>
                     </div>

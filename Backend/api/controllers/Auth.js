@@ -24,7 +24,8 @@ async function login(request,response){
   const {_id,status,isError,message } = await AuthModel.login(body)
   request.id=_id
   const res = responseBody(isError,message)
-  attachJWT(request,response)
+  if(!isError)
+    attachJWT(request,response)
   response.status(status).send(res)
 }
 

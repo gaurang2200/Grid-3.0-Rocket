@@ -33,7 +33,7 @@ async function findOrCreate(body) {
   let check = await AssetDAO.findByIP(ip)
 
   if (check)
-    return { status:409 ,isError:true,message:"IP Already Present" };
+    return { status:409, isError:true, message:"IP Already Present" };
 
   await AssetDAO.create(body);
 

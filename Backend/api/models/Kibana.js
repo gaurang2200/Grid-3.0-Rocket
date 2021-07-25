@@ -5,5 +5,5 @@ const KibanaModel = {
 export default KibanaModel
 
 async function get() {
-  return { status:200, error:false, message:process.env.ELASTICSEARCH_NODE }
+  return { status:200, isError:false, message:process.env.KIBANA_URL }
 }

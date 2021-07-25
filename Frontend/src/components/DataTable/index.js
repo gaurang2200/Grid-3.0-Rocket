@@ -8,7 +8,6 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 
@@ -25,9 +24,9 @@ const StyledTableCell = withStyles((theme) => ({
         backgroundColor: '#333333',
         color: theme.palette.common.white,
         fontWeight: 'bold',
+        width: '10rem',
     },
     body: {
-        minWidth: '10em',
         fontSize: 14,
         fontFamily: 'Roboto',
     },
@@ -50,9 +49,6 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: '10px',
         padding: '0.3em 0.5em',
         marginRight: '1rem'
-    },
-    editStyle:{
-        backgroundColor: '#E4AC00BB'
     },
     deleteStyle:{
         backgroundColor: '#FF375FDD'
@@ -77,13 +73,14 @@ const DataTable = (props) => {
                 </TableHead>
                 <TableBody>
                 {props.table.map((row, index) => (
-                    <StyledTableRow key={row.username}>
+                    <StyledTableRow key={row.ip}>
                         <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                        <StyledTableCell align="right">{row.ipAdd}</StyledTableCell>
+                        <StyledTableCell align="right">{row.ip}</StyledTableCell>
                         <StyledTableCell align="right">{row.ipName}</StyledTableCell>
                         <StyledTableCell align="right" compnent="th" scope="row">{row.desc}</StyledTableCell>
                         <StyledTableCell style={{display: 'flex'}}>
                             <IconButton
+                                onClick={() => props.handleDelete(row.ip)}
                                 className={[classes.iconStyle, classes.deleteStyle].join(" ")}
                                 aria-label="more"
                                 aria-controls="long-menu"
