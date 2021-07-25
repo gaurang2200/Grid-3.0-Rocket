@@ -2,10 +2,11 @@
 // Print Errors on the form
 // Table size should be constant
 // Add Os and Port in the form
+// import axios from 'axios'
 
-const getData = (pg) => {
-  axios.get(`/api/ip/all?page=${pg}`, { withCredentials: true })
-}
+// const getData = (pg) => {
+//   axios.get(`/api/ip/all?page=${pg}`, { withCredentials: true })
+// }
 
 const ipData = [{
   'username': 'Admin Super Pro Max',

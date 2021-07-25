@@ -1,4 +1,4 @@
-import React, {useState, Component} from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 
 class Kibana extends Component {
@@ -25,7 +25,7 @@ class Kibana extends Component {
     render(){
         return (
             <div className="w-full h-full">
-                <iframe className="w-full h-full" src={this.state.url} />
+                <iframe title="Kibana" className="w-full h-full" src={this.state.url} />
             </div>
         );
     }

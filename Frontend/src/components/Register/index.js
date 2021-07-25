@@ -5,7 +5,6 @@ import '../Login/login.css';
 import './register.css';
 import '../Regex';
 
-const BASE_URL = "http://192.168.198.172:8080"
 
 function validate(username, password, confirmPassword){
     if( username.length === 0){
@@ -94,19 +93,19 @@ class Register extends Component {
                                 <label className="inputBlock">
                                     <span>Username</span>
                                     <input className="w-full" type="text" name="username" required={true}
-                                    value={this.state.username} onChange={this.handleChange} 
+                                    value={this.state.username} onChange={this.handleChange}
                                     placeholder="hackingguy"/>
                                 </label>
                                 <label className="inputBlock ">
                                     <span>Password</span>
                                     <input className="w-full" type="password" name="password" required={true}
-                                    value={this.state.password} onChange={this.handleChange} 
+                                    value={this.state.password} onChange={this.handleChange}
                                     placeholder="**********"/>
                                 </label>
                                 <label className="inputBlock ">
                                     <span>Confirm Password</span>
                                     <input className="w-full" type="password" name="confirmPassword" required={true}
-                                    value={this.state.confirmPassword} onChange={this.handleChange} 
+                                    value={this.state.confirmPassword} onChange={this.handleChange}
                                     placeholder="**********"/>
                                 </label>
                             </div>
