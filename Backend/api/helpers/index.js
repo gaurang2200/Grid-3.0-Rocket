@@ -1,15 +1,21 @@
 import minifier from './Minifier'
 import sshTunnel from './SSHTunnel'
 import responseBody from './ResponseBody'
-import scanAsset from './ScanAsset'
+import addAsset from './addAsset'
+import scanAsset from './scanAsset'
+import updateAsset from './updateAsset'
 import encryptDecrypt from './EncryptDecrypt'
 import crypter from './crypter'
+import deleteAsset from './deleteAsset'
 
 export {
   minifier,
   sshTunnel,
   responseBody,
-  scanAsset,
+  addAsset,
   encryptDecrypt,
-  crypter
+  crypter,
+  deleteAsset,
+  scanAsset,
+  updateAsset
 }

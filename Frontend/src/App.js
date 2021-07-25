@@ -1,10 +1,11 @@
 import './App.css';
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route,Redirect, BrowserRouter } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
 import Kibana from './components/Kibana';
+import fourOfour from './components/404';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route exact path="/register" component={Register} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/kibana" component={Kibana} />
+        <Route path='/fourOfour' component={fourOfour} />
       </div>
     </BrowserRouter>
   );

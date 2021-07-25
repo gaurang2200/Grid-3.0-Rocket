@@ -6,7 +6,7 @@ import {
     TableHead, TableRow, Paper, 
     Typography, TablePagination
 } 
-from '@material-ui/core/';
+from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 

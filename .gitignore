@@ -1,8 +1,7 @@
 node_modules/
-views/
 deploy.sh
 credentials.txt
 windows.pem
 linux.pem
 cron.sh
-.github/
+.vscode/
