@@ -7,6 +7,7 @@ import updateAsset from './updateAsset'
 import encryptDecrypt from './EncryptDecrypt'
 import crypter from './crypter'
 import deleteAsset from './deleteAsset'
+import cron from './scheduler'
 
 export {
   minifier,
@@ -17,5 +18,6 @@ export {
   crypter,
   deleteAsset,
   scanAsset,
-  updateAsset
+  updateAsset,
+  cron
 }
