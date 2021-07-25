@@ -1,7 +1,3 @@
-import { formatMs } from '@material-ui/core';
-import axios from 'axios';
-import React from 'react';
-
 // Close Add ip form
 // Print Errors on the form
 // Table size should be constant

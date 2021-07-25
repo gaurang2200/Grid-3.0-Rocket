@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import './addip.css';
 import '../Navbar/navbar.css';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
-import {Modal, Backdrop, Fade, AppBar, Tabs, Tab }
+
+import {Modal, Backdrop, Fade, AppBar, Tabs, Tab, Select, MenuItem, makeStyles, FormControl }
 from '@material-ui/core';
 import DataTable from '../DataTable';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
@@ -50,6 +52,13 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '35em',
     width: '90%',
   },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: 120,
+  },
+  selectEmpty: {
+    marginTop: theme.spacing(2),
+  },
 }));
 
 const styles = {
@@ -85,13 +94,36 @@ function AddIP(){
     const [state, setState] = useState({
         username: "",
         ip: "",
-        port: 22,
+        port: "",
         password: "",
-        ipName: "",
         desc: "",
         os:""
     });
     const [data, setData] = useState(ipData);
+    const [errMessage, setErrorMessage] = useState("");
+
+    //error toast
+    const error = (message) =>
+    toast.error("❌ " + message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
+
+    const success = (message) =>
+    toast.success("🦄" + message, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+    });
 
     const handleOpen = () => {
         setOpen(true);
@@ -129,17 +161,21 @@ function AddIP(){
     // For deleting an existing entry
     const handleDelete = (ip) => {
       console.log(ip);
-      const newData = [...data];
-      const index = data.findIndex((entry) => entry.ip === ip);
 
       axios.post(
         `/api/ip/delete`,
         { ip: ip }
       ).then(res => {
         console.log("Item Deleted Successfully");
+        
+        success(res.message);
+        const newData = [...data];
+        const index = data.findIndex((entry) => entry.ip === ip);
         newData.splice(index, 1);
         setData(newData);
+
       }).catch(err => {
+        error(err.response.data.message);
         console.log(err.response.data.message);
       })
 
@@ -154,7 +190,6 @@ function AddIP(){
           ip: state.ip,
           password: state.password,
           port: state.port,
-          ipName: state.ipName,
           desc: state.desc,
           os: state.os
         };
@@ -163,15 +198,18 @@ function AddIP(){
           '/api/ip/add',
           newData
         ).then(res => {
-          console.log(res.data)
+          setErrorMessage("");
+          success("IP Added Successfully");
+          console.log(res.data);
           const newTable = [...data, newData];
           setData(newTable)
         }).catch(err => {
           console.log(err.response.data)
-          if(err.response.data.message === "Unauthorized")
+          if(err.response.data.message === "Unauthorized"){
+            error('Unauthorized');
             window.location = '/login';
-          else {
-            
+          } else {
+            setErrorMessage(err.response.data.message)
           }
         })
     }
@@ -196,30 +234,31 @@ function AddIP(){
           <Fade in={open}>
             <div className={classes.paper}>
               <h2 id="transition-modal-title">Add an IP Address</h2>
+              <div className="errInfo">{errMessage}</div>
               <form onSubmit={handleOnSubmit}>
 
                   <label className="inputBlock">
                       <span>Username</span>
                       <input className="w-full" type="text" name="username" required={true}
-                      onChange={handleChange} 
+                      onChange={handleChange} value={state.username}
                       placeholder="Administrator"/>
                   </label>
 
                   <label className="inputBlock ">
                       <span>IP Address</span>
                       <input className="w-full" type="text" name="ip" required={true}
-                      onChange={handleChange} 
+                      onChange={handleChange} value={state.ip}
                       placeholder="127.0.0.1"/>
                   </label>
 
                   <label className="inputBlock">
-                      <span>IP Name</span>
-                      <input className="w-full" type="text" name="ipName" required={true}
-                      onChange={handleChange} 
-                      placeholder="Local IP"/>
+                      <span>Port Number</span>
+                      <input className="w-full" type="number" name="port" required={true}
+                      onChange={handleChange} value={state.port}
+                      placeholder="22"/>
                   </label>
 
-                  <label className="inputBlock ">
+                  <label>
                     <AppBar position="static">
                       <Tabs value={value} onChange={handleValueChange}>
                         <Tab style={styles.tabTextStyle} label="Password" />
@@ -237,11 +276,30 @@ function AddIP(){
                         placeholder="**********"/>
                     </TabPanel>
                   </label>
+                  
+                  <label className="inputBlock">
+                    <FormControl className={classes.formControl} required>
+                      <span>Operating System</span>
+                      <Select
+                        value={state.os}
+                        onChange={handleChange}
+                        name="os"
+                        displayEmpty
+                        className={[classes.selectEmpty, "w-full"].join(' ')}
+                        inputProps={{ 'aria-label': 'Without label' }}
+                      >
+                        <MenuItem value="">None</MenuItem>
+                        <MenuItem value={'linux'}>Linux</MenuItem>
+                        <MenuItem value={'win64'}>Windows x64</MenuItem>
+                        <MenuItem value={'win32'}>Windows x32</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </label>
 
                   <label className="inputBlock ">
                       <span>Description</span>
                       <input className="w-full" type="text" name="desc"
-                      onChange={handleChange} 
+                      onChange={handleChange} value={state.desc}
                       placeholder="This is the local IP Address"/>
                   </label>
 
@@ -251,6 +309,7 @@ function AddIP(){
           </Fade>
         </Modal>
       </button>
+      <ToastContainer />
     </div>
   );
 }
