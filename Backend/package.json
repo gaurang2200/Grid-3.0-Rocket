@@ -1,9 +1,9 @@
 {
   "name": "grid-3.0-rocket",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon --inspect server.js"
+    "start": "node server.js"
   },
   "esm": {
     "cjs": true

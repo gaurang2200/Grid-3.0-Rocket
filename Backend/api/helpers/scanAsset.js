@@ -7,7 +7,7 @@ async function scanAsset(asset) {
     while (trie != 3) {
       try {
         let data = await Tunnel(ip, port, os, username, password, privateKey)
-        return data;
+        return data
       }
       catch {
         trie += 1
@@ -21,6 +21,9 @@ async function scanAsset(asset) {
               publicIP: "N/A",
               active: false
             }
+        else
+          //Retry After 4 seconds
+          await new Promise(r => setTimeout(r, 4000))
       }
     }
 }

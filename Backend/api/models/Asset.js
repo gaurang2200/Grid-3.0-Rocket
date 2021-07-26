@@ -31,19 +31,19 @@ async function findOrCreate(body) {
   let check = await AssetDAO.findByIP(ip)
 
   if (check)
-    return { status:409, isError:true, message:"IP Already Present" };
+    return { status:409, isError:true, message:"IP Already Present" }
 
   if(password.length>100){
-    console.log(password);
+    console.log(password)
     body.password=undefined
     body.privateKey = password
   }
 
-  await AssetDAO.create(body);
+  await AssetDAO.create(body)
 
-  await addAsset(body);
+  await addAsset(body)
 
-  return {status:200,isError:false,message:"Created Successfully"};
+  return {status:200,isError:false,message:"Created Successfully"}
 }
 
 async function findAndDelete(body) {
@@ -61,7 +61,7 @@ async function findAndDelete(body) {
   deleteAsset(ip, asset.os)
 
 
-  return {status:200,isError:false,message:"Deleted Successfully"};
+  return {status:200,isError:false,message:"Deleted Successfully"}
 }
 
 async function findAndUpdate(body){
@@ -75,11 +75,11 @@ async function findAndUpdate(body){
     return { status:400,isError:true,message:"IP not present in DB" }
 
   AssetDAO.updateByIP(ip,update)
-  return {status:200,isError:false,message:"Updated Successfully"};
+  return {status:200,isError:false,message:"Updated Successfully"}
 }
 
 async function findAllIP(page,limit){
-  limit=Math.min(30,limit);
+  limit=Math.min(30,limit)
   let assets = await AssetDAO.getPage(page,limit)
   if(!assets) return { status:404, isError:true,message:"No Assets Found" }
   return { status:200, isError:false,message:assets }

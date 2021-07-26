@@ -1,4 +1,4 @@
-import {client} from "../../config";
+import {client} from "../../config"
 
 async function deleteAsset(ip,os) {
   try {

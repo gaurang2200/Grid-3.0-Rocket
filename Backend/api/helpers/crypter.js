@@ -8,7 +8,7 @@ const crypter = {
 export default crypter
 
 async function hash(data){
-  let salt = await bcrypt.genSalt(10);
+  let salt = await bcrypt.genSalt(10)
   return await bcrypt.hash(data,salt)
 }
 

@@ -1,16 +1,15 @@
-import { Client } from "ssh2";
-import minify from "./Minifier";
+import { Client } from "ssh2"
+import minify from "./Minifier"
 
 
 export default async (ip, port, os, user, password, privateKey) => {
   return new Promise((resolve, reject) => {
-
     let sshOptions
 
     const conn = new Client()
 
-    if(password)
-      sshOptions={
+    if (password)
+      sshOptions = {
         host: ip,
         port: port,
         username: user,
@@ -18,7 +17,7 @@ export default async (ip, port, os, user, password, privateKey) => {
         readyTimeout: 5000,
       }
     else
-      sshOptions={
+      sshOptions = {
         host: ip,
         port: port,
         username: user,
@@ -26,58 +25,48 @@ export default async (ip, port, os, user, password, privateKey) => {
         readyTimeout: 5000,
       }
 
-    let result = "";
+    let result = ""
 
     conn
       .on("ready", () => {
 
-        var script;
+        var script
 
         if (os == "win64" || os == "win32")
-          script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`;
+          script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`
         else
-          script = minify(process.env.SH_SCRIPT_PATH);
+          script = minify(process.env.SH_SCRIPT_PATH)
 
         conn.exec(script, (err, stream) => {
-          if (err){ }
+          if (err) { }
 
           stream
             .on("close", (code, signal) => {
-              try{
-                result = JSON.parse(result);
-                result["active"] = true;
-                result["ip"] = ip;
-                resolve(result);
+              try {
+                result = JSON.parse(result)
+                result.active = true
+                result.ip = ip
+                resolve(result)
               } catch (error) {
                 reject(error)
               }
-              conn.end();
+              conn.end()
             })
             .on("data", (data) => {
               try {
-                result += data.toString("utf8");
-              } catch{ }
+                result += data.toString("utf8")
+              } catch { }
             })
             .stderr.on("data", () => { })
-        });
+        })
       }).connect(sshOptions)
 
-      conn.on('error', (err) => {
-        reject(err)
-      })
-  });
-};
+    if (process.listeners('uncaughtException').length == 0) {
+      process.on("uncaughtException", () => { });
+    }
 
-/*
-Object Structure:
-
-{
-    'macAddress':'',
-    'ipAddress':'X.X.X.X',
-    'os':'ubuntu',
-    'hostName':'',
-    'lastSeen':'',
-    'domainInformation':''
+    conn.on('error', (err) => {
+      reject(err)
+    })
+  })
 }
-
-*/

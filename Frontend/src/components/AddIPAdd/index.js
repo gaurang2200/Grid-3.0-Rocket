@@ -62,9 +62,9 @@ const useStyles = makeStyles((theme) => ({
 
 const styles = {
   tabTextStyle: {
-    color: 'black', 
-    fontFamily: 'Source Serif Pro', 
-    width: '40%', 
+    color: 'black',
+    fontFamily: 'Source Serif Pro',
+    width: '40%',
     padding: 0,
   }
 }
@@ -90,7 +90,7 @@ function AddIP(){
     const classes = useStyles();
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
-    const [page, setPage] = useState(1);
+    const [page] = useState(1);
     const [state, setState] = useState({
         username: "",
         ip: "",
@@ -115,16 +115,16 @@ function AddIP(){
     }
     const [errMessage, setErrorMessage] = useState("");
 
-    const incrementPage = () => {
-      setPage(page+1);
-      getdata(page);
-    }
-    const decrementPage = () => {
-      if(page > 1){
-        setPage(page-1);
-        getdata(page);
-      }
-    }
+    // const incrementPage = () => {
+    //   setPage(page+1);
+    //   getdata(page);
+    // }
+    // const decrementPage = () => {
+    //   if(page > 1){
+    //     setPage(page-1);
+    //     getdata(page);
+    //   }
+    // }
 
 
     //error toast
@@ -195,7 +195,7 @@ function AddIP(){
       axios.post(
         `/api/ip/delete`,
         { ip: ip }
-      ).then(res => {        
+      ).then(res => {
         success("Item Deleted Successfully");
         const newData = [...data];
         const index = data.findIndex((entry) => entry.ip === ip);
@@ -221,7 +221,7 @@ function AddIP(){
           desc: state.desc,
           os: state.os
         };
-        
+
         axios.post(
           '/api/ip/add',
           newData
@@ -301,11 +301,11 @@ function AddIP(){
                       </TabPanel>
                       <TabPanel value={value} index={1}>
                         <input className="w-full" type="file" name="password" required={true}
-                          onChange={handleChange} accept=".pem" 
+                          onChange={handleChange} accept=".pem"
                           placeholder="**********"/>
                       </TabPanel>
                     </label>
-                    
+
                     <label className="inputBlock">
                       <FormControl className={[classes.formControl, "w-full"].join(' ')} required>
                         <span>Operating System</span>

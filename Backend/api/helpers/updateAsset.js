@@ -7,7 +7,7 @@ async function updateAsset(asset) {
   let check = await getAsset(asset.ip,asset.os)
   if(check.length==0) return await addAsset(asset)
   await deleteAsset(asset)
-  addAsset(asset)
+  await addAsset(asset)
 }
 
 export default updateAsset

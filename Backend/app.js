@@ -26,8 +26,7 @@ app.use(Express.urlencoded({ limit: BODY_LIMIT, extended: true }))
 app.use(helmet({ contentSecurityPolicy: false}))
 
 //Serving Front End
-console.log(path.join(__dirname, '../Frontend/build'));
-app.use(Express.static(path.join(__dirname, '../Frontend/build')));
+app.use(Express.static(path.join(__dirname, '../Frontend/build')))
 
 // Initialize Routes
 Routes.init(app)

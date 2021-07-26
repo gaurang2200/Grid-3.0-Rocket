@@ -6,4 +6,6 @@ const UserSchema = new Schema({
   password:{ type:String,required:true }
 },{ timestamp:true })
 
+UserSchema.index({username:1})
+
 export default UserSchema

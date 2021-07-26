@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@master
       - uses: actions/setup-node@master
@@ -23,11 +23,15 @@ jobs:
         working-directory: ./Backend
         run: |
           npm ci
-          chmod +x ./deploy.sh
-          ./deploy.sh & npx wait-on http://localhost:8080
+          npm start & npx wait-on http://localhost:8080
         env:
-          DB_CONNECTION_STRING: ${{secrets.DB_CONNECTION_STRING}}
-          JWT_SECRET_TOKEN: ${{secrets.JWT_SECRET_TOKEN}}
-          SENDGRID_API_KEY: ${{secrets.SENDGRID_API_KEY}}
-          HOST: ${{secrets.HOST}}
-          NODE_ENV: ${{secrets.NODE_ENV}}
+          MONGO_DBNAME: ${{secrets.MONGO_DBNAME}}
+          MONGO_HOSTS: ${{secrets.MONGO_HOSTS}}
+          MONGO_USERNAME: ${{secrets.MONGO_USERNAME}}
+          MONGO_PASSWORD: ${{secrets.MONGO_PASSWORD}}
+          MONGO_READ_PREFERENCE: ${{secrets.MONGO_READ_PREFERENCE}}
+          ELASTICSEARCH_NODE: ${{secrets.ELASTICSEARCH_NODE}}
+          ELASTIC_PASSWORD: ${{secrets.ELASTIC_PASSWORD}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          PS_SCRIPT_PATH: $GITHUB_WORKSPACE/Backend/scripts/windows.ps1
+          SH_SCRIPT_PATH: $GITHUB_WORKSPACE/Backend/scripts/linux.sh

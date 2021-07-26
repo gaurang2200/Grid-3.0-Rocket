@@ -1,25 +1,26 @@
-const express = require("express");
-const router = express.Router();
+import Express from 'express'
 import { JWTHelper } from '../middlewares'
 
-router.get("/", JWTHelper.decryptJWT, function (req, res, next) {
-  if (req.id) return res.redirect("/dashboard");
-  res.redirect("/login");
-});
+const FrontEndRouter = Express.Router()
 
-router.get("/login",JWTHelper.decryptJWT, (req, res, next) => {
-  if (req.id) return res.redirect("/dashboard");
-  next();
-});
+export default FrontEndRouter
 
-router.get("/register",JWTHelper.decryptJWT, (req, res, next) => {
-    if (req.id) return res.redirect("/dashboard");
-    next();
-});
+FrontEndRouter.get("/", JWTHelper.decryptJWT, function (req, res, next) {
+  if (req.id) return res.redirect("/dashboard")
+  res.redirect("/login")
+})
 
-router.get("/dashboard",JWTHelper.decryptJWT, (req, res, next) => {
-  if (!req.id) return res.redirect("/login");
-  next();
-});
+FrontEndRouter.get("/login",JWTHelper.decryptJWT, (req, res, next) => {
+  if (req.id) return res.redirect("/dashboard")
+  next()
+})
 
-module.exports = router;
+FrontEndRouter.get("/register",JWTHelper.decryptJWT, (req, res, next) => {
+    if (req.id) return res.redirect("/dashboard")
+    next()
+})
+
+FrontEndRouter.get("/dashboard",JWTHelper.decryptJWT, (req, res, next) => {
+  if (!req.id) return res.redirect("/login")
+  next()
+})

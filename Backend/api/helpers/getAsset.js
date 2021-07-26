@@ -1,4 +1,4 @@
-import client from "../../config/DB_CONFIG";
+import client from "../../config/DB_CONFIG"
 
 
 async function getAsset(ip,os){

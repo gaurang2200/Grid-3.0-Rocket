@@ -5,3 +5,4 @@ windows.pem
 linux.pem
 cron.sh
 .vscode/
+yarn.lock

@@ -20,5 +20,5 @@ async function findOrCreate(body){
 async function findUser(body){
   const { username } = body
   let c = await mongoModel.findOne({username:username})
-  return c;
+  return c
 }
