@@ -41,7 +41,7 @@ async function findOrCreate(body) {
 
   await AssetDAO.create(body);
 
-  addAsset(body)
+  await addAsset(body);
 
   return {status:200,isError:false,message:"Created Successfully"};
 }

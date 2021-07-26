@@ -4,7 +4,7 @@ import { JWTHelper } from '../middlewares'
 
 router.get("/", JWTHelper.decryptJWT, function (req, res, next) {
   if (req.id) return res.redirect("/dashboard");
-  next();
+  res.redirect("/login");
 });
 
 router.get("/login",JWTHelper.decryptJWT, (req, res, next) => {

@@ -1,13 +1,11 @@
 import { Client } from "ssh2";
 import minify from "./Minifier";
 
-const ssh2 = new Client();
-
-export default async (ip, port, os, user, password, privateKey) => {
+export default async (ip, port, operatingSystem, user, password, privateKey) => {
   return new Promise((resolve, reject) => {
 
     let sshOptions;
-
+    const conn = new Client();
     if(password)
       sshOptions={
         host: ip,
@@ -27,18 +25,18 @@ export default async (ip, port, os, user, password, privateKey) => {
 
     let result = "";
 
-    ssh2
+    conn
       .on("ready", () => {
-        console.log("Client :: ready");
+        console.log("Client :: ready", operatingSystem);
 
         var script;
 
-        if (os == "win64" || os == "win32")
+        if (operatingSystem == "win64" || operatingSystem == "win32")
           script = `powershell -command "${minify(process.env.PS_SCRIPT_PATH)}`;
         else
           script = minify(process.env.SH_SCRIPT_PATH);
 
-        ssh2.exec(script, (err, stream) => {
+        conn.exec(script, (err, stream) => {
           if (err) console.error(err.message);
 
           stream
@@ -54,7 +52,7 @@ export default async (ip, port, os, user, password, privateKey) => {
                 console.log(error.message);
                 reject(error)
               }
-              ssh2.end();
+              conn.end();
             })
             .on("data", (data) => {
               try {
@@ -66,15 +64,15 @@ export default async (ip, port, os, user, password, privateKey) => {
             .stderr.on("data", (data) => {
               console.log("STDERR: " + data);
             })
-
-          process.on("uncaughtException", (error) => {
-            console.log(error.message);
-          });
         });
       })
       .connect(sshOptions);
 
-      ssh2.on('error', (err) => {
+      process.on("uncaughtException", (error) => {
+        console.log(error.message);
+      });
+
+      conn.on('error', (err) => {
         console.log(err)
         reject(err)
       })
