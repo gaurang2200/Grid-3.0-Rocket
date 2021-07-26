@@ -173,14 +173,19 @@ function AddIP(){
           readFileDataAsBase64(value)
           .then(res => {
             res = res.replace('data:application/octet-stream;base64,', '');
-            value = res;
+            value = atob(res);
+            console.log(value);
+            setState(prevState => {
+              return {...prevState, password: value};
+            })
           }).catch(err => {
             console.log(err.message);
           })
+        } else {
+          setState(prevState => {
+            return {...prevState, [propName]: value}
+          })
         }
-        setState(prevState => {
-          return {...prevState, [propName]: value}
-        })
     }
 
     // For deleting an existing entry
@@ -325,11 +330,11 @@ function AddIP(){
             </Fade>
           </Modal>
         </button>
-        <div style={{float:'right'}}>
+        {/* <div style={{float:'right'}}>
           <button onClick={decrementPage} className="pageArrowStyle" value="<">&lt;</button>
           {page}
           <button onClick={incrementPage} className="pageArrowStyle" value="<">&gt;</button>
-        </div>
+        </div> */}
       </div>
       <ToastContainer />
     </div>

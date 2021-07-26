@@ -1,6 +1,7 @@
 'use strict'
 
 import Express from 'express'
+import path from 'path'
 import cors from 'cors'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
@@ -22,7 +23,11 @@ app.use(cors(corsOptions))
 app.use(cookieParser())
 app.use(Express.json({ limit: BODY_LIMIT }))
 app.use(Express.urlencoded({ limit: BODY_LIMIT, extended: true }))
-app.use(helmet())
+app.use(helmet({ contentSecurityPolicy: false}))
+
+//Serving Front End
+console.log(path.join(__dirname, '../Frontend/build'));
+app.use(Express.static(path.join(__dirname, '../Frontend/build')));
 
 // Initialize Routes
 Routes.init(app)

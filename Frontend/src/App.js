@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import { Route, BrowserRouter } from 'react-router-dom';
+import { Route, Redirect, BrowserRouter } from 'react-router-dom';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
@@ -13,9 +13,12 @@ function App() {
       <div className="App">
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/kibana" component={Kibana} />
-        <Route path='/fourOfour' component={fourOfour} />
+        <Route exact path="/dashboard" component={Dashboard} />
+        <Route exact path="/kibana" component={Kibana} />
+        <Route exact path='/fourOfour' component={fourOfour} />
+        <Route exact path="/">
+          <Redirect to="/login" />
+        </Route>
       </div>
     </BrowserRouter>
   );

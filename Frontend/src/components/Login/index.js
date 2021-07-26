@@ -81,7 +81,7 @@ class Login extends Component {
                             <input type="submit" value="Log in" className="w-full buttonStyle" />
                         </form>
                         <p className="margin1">
-                            <a href="./register" className="links">Create Account</a>
+                            <a href="/register" className="links">Create Account</a>
                         </p>
                     </div>
                 </div>

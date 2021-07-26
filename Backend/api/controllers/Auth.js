@@ -32,5 +32,6 @@ async function login(request,response){
 async function logout(request,response){
   const {status,isError,message } = await AuthModel.logout();
   const res = responseBody(isError,message)
-  response.status(status).send(res)
+  response.cookie("jwt", "", {httpOnly:true});
+  response.status(status).send(res);
 }

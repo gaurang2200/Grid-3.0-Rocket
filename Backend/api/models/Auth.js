@@ -31,7 +31,7 @@ async function login(body) {
 }
 
 async function logout() {
-  return { status: 301, isError: false, message: "Logged Out Successfully" }
+  return { status: 200, isError: false, message: "Logged Out Successfully" }
 }
 
 
