@@ -110,7 +110,6 @@ function AddIP(){
         const notes = res.data.message;
         setData(notes);
       }).catch(err => {
-        console.log(err.response.data);
       })
     }
     const [errMessage, setErrorMessage] = useState("");
@@ -174,12 +173,10 @@ function AddIP(){
           .then(res => {
             res = res.replace('data:application/octet-stream;base64,', '');
             value = atob(res);
-            console.log(value);
             setState(prevState => {
               return {...prevState, password: value};
             })
           }).catch(err => {
-            console.log(err.message);
           })
         } else {
           setState(prevState => {
@@ -190,8 +187,6 @@ function AddIP(){
 
     // For deleting an existing entry
     const handleDelete = (ip) => {
-      console.log(ip);
-
       axios.post(
         `/api/ip/delete`,
         { ip: ip }
@@ -204,7 +199,6 @@ function AddIP(){
 
       }).catch(err => {
         error(err.response.data.message);
-        console.log(err.response.data.message);
       })
 
     }
@@ -228,11 +222,9 @@ function AddIP(){
         ).then(res => {
           setErrorMessage("");
           success("IP Added Successfully");
-          console.log(res.data);
           const newTable = [...data, newData];
           setData(newTable)
         }).catch(err => {
-          console.log(err.response.data)
           if(err.response.data.message === "Unauthorized"){
             error('Unauthorized');
             window.location = '/login';

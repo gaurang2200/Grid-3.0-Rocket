@@ -56,7 +56,6 @@ class Register extends Component {
             errMessage: message
         });
         if(message.length > 0){
-            console.log(this.state.errMessage)
             return;
         }
         const axiosOptions = {
