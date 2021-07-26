@@ -6,3 +6,4 @@ linux.pem
 cron.sh
 .vscode/
 yarn.lock
+package-lock.json

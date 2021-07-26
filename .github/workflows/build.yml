@@ -22,7 +22,7 @@ jobs:
       - name: Backend Run Test
         working-directory: ./Backend
         run: |
-          npm ci
+          npm i
           npm start & npx wait-on http://localhost:8080
         env:
           MONGO_DBNAME: ${{secrets.MONGO_DBNAME}}
