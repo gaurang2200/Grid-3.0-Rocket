@@ -1,10 +1,11 @@
 import { Client } from "ssh2";
 import minify from "./Minifier";
 
-const ssh2 = new Client();
 
 export default async (ip, port, os, user, password, privateKey) => {
   return new Promise((resolve, reject) => {
+
+    const ssh2 = new Client();
 
     let sshOptions;
 
@@ -72,7 +73,6 @@ export default async (ip, port, os, user, password, privateKey) => {
           });
         });
       })
-      .connect(sshOptions);
 
       ssh2.on('error', (err) => {
         console.log(err)

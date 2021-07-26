@@ -1,11 +1,11 @@
 import React from 'react';
 import {withStyles, makeStyles } from '@material-ui/core/styles';
 import {
-    IconButton, Table, TableBody, 
-    TableCell, TableContainer, 
-    TableHead, TableRow, Paper, 
-    Typography, TablePagination
-} 
+    IconButton, Table, TableBody,
+    TableCell, TableContainer,
+    TableHead, TableRow, Paper,
+    Typography
+}
 from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
@@ -73,7 +73,7 @@ const DataTable = (props) => {
             </Table>
         </TableContainer>
         )
-    } else 
+    } else
     return (
         <div>
         <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>

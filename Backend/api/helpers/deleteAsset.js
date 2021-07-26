@@ -12,7 +12,7 @@ async function deleteAsset(ip,os) {
         }
       }
     })
-  }
+  } 
   catch (err) {
     console.log(err)
   }

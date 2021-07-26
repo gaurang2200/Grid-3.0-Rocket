@@ -32,7 +32,7 @@ class Kibana extends Component {
     render(){
         return (
             <div style={styles.fullSize}>
-                <iframe style={styles.fullSize} src={this.state.url} />
+                <iframe title="kibana" style={styles.fullSize} src={this.state.url} />
             </div>
         );
     }
