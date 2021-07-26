@@ -6,7 +6,7 @@ import deleteAsset from './deleteAsset'
 async function updateAsset(asset) {
   let check = await getAsset(asset.ip,asset.os)
   if(check.length==0) return await addAsset(asset)
-  await deleteAsset(asset)
+  await deleteAsset(asset.ip,asset.os)
   await addAsset(asset)
 }
 

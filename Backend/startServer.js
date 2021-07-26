@@ -11,7 +11,7 @@ const startServer = async (app) => {
   try {
     await mongoConnect()
     await app.listen(PORT)
-    //await cron()
+    await cron()
     console.log(`[Info] Server Started Successfully! Listening on Port: ${PORT}`)
   } catch (error) {
     console.log(error)
