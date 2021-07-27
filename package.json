@@ -1,0 +1,13 @@
+{
+  "name": "grid-3.0-rocket",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "deploy": "cd ./Frontend && npm run build && cd ../Backend && ./deploy.sh",
+    "dev": "./node_modules/concurrently/bin/concurrently.js \"cd ./Frontend && npm start\" \"cd ./Backend && ./start-local.sh\"",
+    "build":"cd ./Frontend && npm run build"
+  },
+  "dependencies": {
+    "concurrency":"^0.1.4"
+  }
+}

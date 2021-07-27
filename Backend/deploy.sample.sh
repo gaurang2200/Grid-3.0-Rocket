@@ -24,4 +24,11 @@ export MONGO_PEM_PATH=
 ##### JWT SECRET
 export JWT_SECRET_KEY=<JWT Secret Token>
 
+
+#### Kibana URL
+export KIBANA_URL=<Kibana URL>
+
+#### Cron Period
+export CRON_TIME='*/15 * * * *'
+
 npm start

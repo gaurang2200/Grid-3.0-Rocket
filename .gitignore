@@ -7,3 +7,4 @@ cron.sh
 .vscode/
 yarn.lock
 package-lock.json
+start-local.sh
