@@ -1,10 +1,8 @@
 import React from 'react';
-import {withStyles, makeStyles } from '@material-ui/core/styles';
+import {makeStyles } from '@material-ui/core/styles';
 import {
     IconButton, Table, TableBody,
-    TableCell, TableContainer,
-    TableHead, TableRow, Paper,
-    Typography
+    TableCell, TableHead, TableRow, Paper
 }
 from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -38,9 +36,9 @@ const DataTable = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    <Typography variant="h6" gutterBottom>
-                        No Data Available
-                    </Typography>
+                    <TableRow>
+                        <TableCell>No Data Available</TableCell>
+                    </TableRow>
                 </TableBody>
             </Table>
         </Paper>

@@ -82,24 +82,24 @@ input {
 
 .buttonStyle {
     display: block;
-    color: black;
+    color: white;
     text-decoration: none;
     text-align: center;
-    background-color: #fdc732;
+    background-color: #006bb4;
     margin-top: 1em;
     border-style: solid;
     border-color: gainsboro;
     border-width: 1px;
     border-radius: 5px;
     padding: .5rem .75rem;
-    transition: all 0.3s;
+    transition: all 0.2s;
     font-family: 'Source Serif Pro', sans-serif;
     font-size: 1em;
     cursor: pointer;
 }
 
 .buttonStyle:hover{
-    background-color: #eeb006;
+    background-color: #014d80;
 }
 
 .margin1{

@@ -120,10 +120,10 @@ function AddIP(){
         const notes = res.data.message;
         setData(notes);
         
-        notes.map(row => {
-          console.log(row.os);
+        notes.map((row) => {
           if(row.os === 'linux')   setLinux(prev => prev+1);
           else    setWindows(prev => prev+1);
+          return 0;
         })
 
       }).catch(err => {
@@ -261,7 +261,6 @@ function AddIP(){
     
     const handleSubmit = (e) => {
       e.preventDefault();
-      console.log("Submitted")
     }
 
   return (
