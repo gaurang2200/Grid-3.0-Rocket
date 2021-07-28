@@ -20,6 +20,7 @@ const useStyles = makeStyles((theme) => ({
         marginRight: '10%'
     },
     iconStyle: {
+        color: '#F5A35C',
         width: '8vh'
     },
     extendedIcon: {

@@ -23,7 +23,8 @@
 }
 
 .addButtonStyle:hover{
-    background-color: cornflowerblue;
+    color: white;
+    background-color: #033296;
     box-shadow: rgb(8, 1, 112) 0em 0.5em 1em;
 }
 
@@ -59,9 +60,84 @@
 
 }
 
-
 h2 {
     margin-block-end: 0em;
+}
+
+.tableDiv{
+    width: 100%;
+    align-items: center;
+}
+
+
+.tableStyle{
+    overflow-x: auto;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10px;
+    padding: 10px;
+}
+
+.tableStyle th {
+    font-size: 1rem;
+    /* font-family: 'Source Serif Pro', 'sans-serif'; */
+    background-color: #e6ecf8;
+    /* color: white; */
+    font-weight: 1000;
+    max-width: 130px;
+    min-width: 130px;
+    padding: 0 !important;
+    overflow-x: auto;
+    white-space: nowrap;
+    text-align: center !important;
+}
+
+.tableStyle tr {
+    height: 3.5rem !important;
+    background-color: white;
+    border-bottom: gray solid 1px;
+}
+
+.tableStyle tr:nth-of-type(odd) {
+    background-color: '#E5EAF9',
+}
+
+.tableStyle td {
+    font-size: 1rem;
+    font-family: 'Source Serif Pro', 'sans-serif';
+    height: 40px !important;
+    padding: 5px !important;
+    text-align: center !important;
+}
+
+
+#cardsDiv{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.cardStyle{
+    height: 12rem;
+    width: 33%;
+    background-color: white;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border: solid #8f949e 1px;
+}
+
+@media only screen and (max-width: 600px){
+    #cardsDiv{
+        flex-direction: column;
+    }
+    .cardStyle{
+        width: 100%;
+    }
 }
 
 

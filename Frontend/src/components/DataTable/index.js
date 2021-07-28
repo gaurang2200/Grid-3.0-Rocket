@@ -9,109 +9,84 @@ import {
 from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-
-const StyledTableCell = withStyles((theme) => ({
-    head: {
-        backgroundColor: '#333333',
-        color: theme.palette.common.white,
-        fontWeight: 'bold',
-        width: '15rem',
-    },
-    body: {
-        fontSize: 14,
-        fontFamily: 'Roboto',
-    },
-}))(TableCell);
-
-const StyledTableRow = withStyles((theme) => ({
-    root: {
-        '&:nth-of-type(even)': {
-            backgroundColor: theme.palette.action.hover,
-        },
-        backgroundColor: 'white',
-        borderBottom: 'gray solid 1px',
-    },
-}))(TableRow);
-
-
 const useStyles = makeStyles((theme) => ({
     iconStyle: {
-        display: 'flex',
         borderRadius: '10px',
         padding: '0.3em 0.5em',
-        marginRight: '1rem'
     },
     deleteStyle:{
         color: 'white',
-        backgroundColor: '#D95350'
-    }
+        backgroundColor: '#FF5671'
+    },
 }))
 
 
 const DataTable = (props) => {
     const classes = useStyles();
-    const {table, handleDelete} = props;
-
-    if(table === null){
+    const {rows, handleDelete} = props;
+    if(rows === null){
         return (
-            <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>
-            <Table className={classes.table} aria-label="Data Table">
+            <Paper className="tableStyle">
+            <Table aria-label="Data Table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell>Username</StyledTableCell>
-                        <StyledTableCell align="right">IP Address</StyledTableCell>
-                        <StyledTableCell align="right">Port Number</StyledTableCell>
-                        <StyledTableCell align="right">Operating System</StyledTableCell>
-                        <StyledTableCell align="left">Actions</StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody style={{alignItems:'center'}}>
-                <Typography variant="h6" gutterBottom>
-                    No Data Available
-                </Typography>
-                </TableBody>
-            </Table>
-        </TableContainer>
-        )
-    } else
-    return (
-        <div>
-        <TableContainer style={{width: '100%', marginTop: '1rem'}} component={Paper}>
-            <Table className={classes.table} aria-label="Data Table">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>Username</StyledTableCell>
-                        <StyledTableCell align="right">IP Address</StyledTableCell>
-                        <StyledTableCell align="right">Port Number</StyledTableCell>
-                        <StyledTableCell align="right">Operating System</StyledTableCell>
-                        <StyledTableCell align="left">Actions</StyledTableCell>
+                        <TableCell>Username</TableCell>
+                        <TableCell align="right">IP Address</TableCell>
+                        <TableCell align="right">Port Number</TableCell>
+                        <TableCell align="right">Operating System</TableCell>
+                        <TableCell align="left">Actions</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                {table.map((row, index) => (
-                    <StyledTableRow key={row.ip}>
-                        <StyledTableCell component="th" scope="row">{row.username}</StyledTableCell>
-                        <StyledTableCell align="right">{row.ip}</StyledTableCell>
-                        <StyledTableCell align="right">{row.port}</StyledTableCell>
-                        <StyledTableCell align="right">{row.os}</StyledTableCell>
-                        <StyledTableCell style={{display: 'flex'}}>
+                    <Typography variant="h6" gutterBottom>
+                        No Data Available
+                    </Typography>
+                </TableBody>
+            </Table>
+        </Paper>
+        )
+    } else
+    return (
+        <Paper className="tableStyle">
+            <Table aria-label="Data Table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell>Username</TableCell>
+                        <TableCell align="right">IP Address</TableCell>
+                        <TableCell align="right">Port Number</TableCell>
+                        <TableCell align="right">Operating System</TableCell>
+                        <TableCell align="left">Actions</TableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                {rows.map((row) => (
+                    <TableRow key={row.ip}>
+                        <TableCell scope="row" style={{textTransform: 'capitalize'}}>
+                        {row.username}</TableCell>
+                        <TableCell align="right">{row.ip}</TableCell>
+                        <TableCell align="right">{row.port}</TableCell>
+                        <TableCell align="right">
+                            {row.os === 'linux'? 
+                                "Linux"
+                                : "Windows"
+                            }
+                        </TableCell>
+                        <TableCell>
                             <IconButton
-                                onClick={() => handleDelete(row.ip)}
-                                className={[classes.iconStyle, classes.deleteStyle, "actionTextStyle"].join(" ")}
+                                onClick={() => handleDelete(row.ip, row.os)}
+                                className={[classes.iconStyle, classes.deleteStyle].join(" ")}
                                 aria-label="more"
                                 aria-controls="long-menu"
                                 aria-haspopup="true"
                             >
                                 <DeleteIcon />
-                                <span style={{fontSize: '0.9rem'}}>Delete</span>
                             </IconButton>
-                        </StyledTableCell>
-                    </StyledTableRow>
+                        </TableCell>
+                    </TableRow>
                 ))}
                 </TableBody>
             </Table>
-        </TableContainer>
-        </div>
+        </Paper>
     );
 }
 

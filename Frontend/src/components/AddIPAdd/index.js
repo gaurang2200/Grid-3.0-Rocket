@@ -5,9 +5,10 @@ import './addip.css';
 import '../Navbar/navbar.css';
 import PropTypes from 'prop-types';
 
-import {Modal, Backdrop, Fade, AppBar, Tabs, Tab, Select, MenuItem, makeStyles, FormControl }
+import {Modal, Backdrop, Fade, AppBar, Tabs, Tab, Select, MenuItem, makeStyles, FormControl, TextField }
 from '@material-ui/core';
 import DataTable from '../DataTable';
+import Card from '../Card';
 import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import axios from 'axios';
 
@@ -58,6 +59,12 @@ const useStyles = makeStyles((theme) => ({
   selectEmpty: {
     marginTop: theme.spacing(2),
   },
+  searchStyle: {
+    width: '100%',
+    // maxWidth: "50rem",
+    backgroundColor: 'white',
+    borderRadius: '2px',
+  },
 }));
 
 const styles = {
@@ -88,6 +95,7 @@ function readFileDataAsBase64(file) {
 
 function AddIP(){
     const classes = useStyles();
+    
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
     const [page] = useState(1);
@@ -99,6 +107,8 @@ function AddIP(){
         os:""
     });
     const [data, setData] = useState(null);
+    const[windows, setWindows] = useState(0);
+    const[linux, setLinux] = useState(0);
 
     useEffect(() => {
       getdata(page);
@@ -109,6 +119,13 @@ function AddIP(){
       .then(res => {
         const notes = res.data.message;
         setData(notes);
+        
+        notes.map(row => {
+          console.log(row.os);
+          if(row.os === 'linux')   setLinux(prev => prev+1);
+          else    setWindows(prev => prev+1);
+        })
+
       }).catch(err => {
       })
     }
@@ -186,12 +203,16 @@ function AddIP(){
     }
 
     // For deleting an existing entry
-    const handleDelete = (ip) => {
+    const handleDelete = (ip, os) => {
       axios.post(
         `/api/ip/delete`,
         { ip: ip }
       ).then(res => {
         success("Item Deleted Successfully");
+
+        if(os === 'linux')  setLinux(prev => prev-1);
+        else  setWindows(prev => prev-1);
+
         const newData = [...data];
         const index = data.findIndex((entry) => entry.ip === ip);
         newData.splice(index, 1);
@@ -222,6 +243,10 @@ function AddIP(){
         ).then(res => {
           setErrorMessage("");
           success("IP Added Successfully");
+          
+          if(newData.os === 'linux')  setLinux(prev => prev+1);
+          else  setWindows(prev => prev+1);
+
           const newTable = [...data, newData];
           setData(newTable)
         }).catch(err => {
@@ -233,10 +258,28 @@ function AddIP(){
           }
         })
     }
+    
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log("Submitted")
+    }
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems:'center'}}>
-      <DataTable table={data} handleDelete={handleDelete}/>
+    <div className="tableDiv">
+      <div id="cardsDiv">
+        <Card value={windows+linux} message="Total Assets"/>
+        <Card value={windows} message="Windows Machines"/>
+        <Card value={linux} message="Linux Machines"/>
+      </div>
+      <form onSubmit={handleSubmit} className={classes.root} noValidate autoComplete="off">
+          <TextField 
+              className={classes.searchStyle}
+              size="small" id="outlined-basic" 
+              label="Search" 
+              variant="outlined"
+          />
+      </form>
+      <DataTable rows={data} handleDelete={handleDelete}/>
       <div className="w-full" id="buttonsDiv">
         <button className="addButtonStyle">
           <a className="w-full h-full addButton" onClick={handleOpen}>

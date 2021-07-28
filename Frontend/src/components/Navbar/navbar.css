@@ -1,16 +1,16 @@
 :root{
-    --dbColor: #2874F0;
-    --hoverColor: #fdc732;
+    --dbColor: #25282F;
+    --hoverColor: rgb(58, 63, 75);
 }
 
 #nav{
     width: 100%;
-    box-shadow: black 0em 0em 1em;
+    min-height: 4rem;
+    box-shadow: rgb(7, 0, 71) 0em 0em 1em;
     position: fixed;
-    height: 8vh;
     background-color: var(--dbColor);
     display: grid;
-    grid-template-columns: 1fr 4fr 0.5fr;
+    grid-template-columns: 1fr 4fr 2fr;
     z-index: 99;
 }
 
@@ -50,7 +50,7 @@
 
 #list li:hover{
     background-color: var(--hoverColor);
-    color: black;
+    /* color: black; */
 }
 
 #nav a {
